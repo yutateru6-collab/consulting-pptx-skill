@@ -67,6 +67,14 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install --upgrade python-pptx pillow
 
+      - name: Compile classroom QA scripts
+        run: |
+          python -m py_compile \
+            scripts/check_classroom_deck.py \
+            scripts/check_classroom_hard_gates.py \
+            scripts/check_classroom_delivery.py \
+            scripts/make_contact_sheet.py
+
       - name: Resolve PPTX inputs
         id: decks
         shell: bash
