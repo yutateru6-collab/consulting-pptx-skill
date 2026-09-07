@@ -28,16 +28,17 @@
 5. スピーカーノートに教師用の詳しい説明・問い・想定回答・クリック順を入れる。
 6. 原則、各内容スライドに on-click の段階表示を入れる。
 7. `scripts/check_deck.py` を実行する。
-8. `scripts/check_classroom_deck.py` を実行する。
-9. **PPTXをPDF→PNGへレンダリングする。**
-10. 全ページPNGを1枚ずつ原寸に近い状態で見る。
-11. コンタクトシートで全体の単調さ・色・構図の偏りも見る。
-12. `references/classroom-visual-qa-v3.md` の基準で visual QA JSON を作る。
-13. 問題が1件でもあれば、生成元を修正して全ページ再レンダリングする。
-14. `scripts/check_classroom_delivery.py` を通す。
-15. 最終版のみ納品する。
+8. `scripts/check_classroom_hard_gates.py` を実行する。
+9. `scripts/check_classroom_deck.py` を実行する。
+10. **PPTXをPDF→PNGへレンダリングする。**
+11. 全ページPNGを1枚ずつ原寸に近い状態で見る。
+12. コンタクトシートで全体の単調さ・色・構図の偏りも見る。
+13. `references/classroom-visual-qa-v3.md` の基準で visual QA JSON を作る。
+14. 問題が1件でもあれば、生成元を修正して全ページ再レンダリングする。
+15. `scripts/check_classroom_delivery.py` を通す。
+16. 最終版のみ納品する。
 
-**機械QA PASSだけでは完成ではない。画像QA PASSだけでも完成ではない。両方必要。**
+**一般QA、Hard Gate QA、画像QAの全部が必要。どれか1つでも未実行なら完成ではない。**
 
 ---
 
@@ -59,7 +60,7 @@
 - 問題スライドで答えが最初から見える
 - フローチャート指定なのに、実態が角丸カードの羅列
 - 修正後の再レンダリングをしていない
-- checker が FAIL を返している
+- いずれかの checker が FAIL を返している
 
 文字が入らない場合は、**小さくするのではなく、削る・広げる・組み替える・分ける**。
 
@@ -87,11 +88,22 @@ pip install python-pptx pillow
 
 python3 scripts/check_deck.py path/to/deck.pptx
 
-# 自動判定（ファイル名や表紙にフロー表現があれば flowchart profile）
-python3 scripts/check_classroom_deck.py path/to/deck.pptx --profile auto --json classroom-qa.json
+# 最上位の拒否条件。ファイル名や表紙から flowchart を自動推定できる
+python3 scripts/check_classroom_hard_gates.py \
+  path/to/deck.pptx \
+  --profile auto \
+  --json hard-gates.json
 
-# フローチャート指定を明示
-python3 scripts/check_classroom_deck.py path/to/deck.pptx --profile flowchart --json classroom-qa.json
+# 既存の詳細Classroom QA
+python3 scripts/check_classroom_deck.py \
+  path/to/deck.pptx \
+  --json classroom-qa.json
+
+# フローチャート指定を明示する場合
+python3 scripts/check_classroom_hard_gates.py \
+  path/to/deck.pptx \
+  --profile flowchart \
+  --json hard-gates.json
 ```
 
 LibreOffice と poppler-utils がある環境では：
@@ -106,7 +118,7 @@ bash scripts/render_classroom_deck.sh path/to/deck.pptx qa-output
 
 ```bash
 python3 scripts/check_classroom_delivery.py \
-  --machine classroom-qa.json \
+  --machine hard-gates.json \
   --visual visual-qa.json
 ```
 
@@ -121,7 +133,8 @@ python3 scripts/check_classroom_delivery.py \
 Actionsは：
 
 - 一般機械QA
-- Classroom QA
+- Classroom Hard Gate QA
+- Classroom詳細QA
 - LibreOfficeでPDF化
 - 全ページPNG化
 - コンタクトシート生成
@@ -140,6 +153,6 @@ Actionsは：
 - 生成ルール化できる → `references/classroom-hard-gates-v3.md`
 - フローチャート特有 → `references/classroom-flowchart-rules.md`
 - 画像でしか拾えない → `references/classroom-visual-qa-v3.md`
-- 機械検出できる → `scripts/check_classroom_deck.py`
+- 機械検出できる → `scripts/check_classroom_hard_gates.py` / `scripts/check_classroom_deck.py`
 
 **一度起きた失敗を次回から仕組みで防ぐ**ことをこのForkの基本方針とする。
