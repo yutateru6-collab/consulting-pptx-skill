@@ -152,12 +152,12 @@ jobs:
             bash scripts/render_classroom_deck.sh "$deck" "$out/rendered"
             echo "::endgroup::"
 
-            cat > "$out/VISUAL_QA_REQUIRED.txt" <<'EOF'
-Rendering succeeded, but the deck is NOT delivery-ready yet.
-Review every rendered PNG using references/classroom-visual-qa-v3.md,
-create visual-qa.json, rerender after any fixes, then run:
-python3 scripts/check_classroom_delivery.py --machine hard-gates.json --visual visual-qa.json
-EOF
+            printf '%s\n' \
+              'Rendering succeeded, but the deck is NOT delivery-ready yet.' \
+              'Review every rendered PNG using references/classroom-visual-qa-v3.md,' \
+              'create visual-qa.json, rerender after any fixes, then run:' \
+              'python3 scripts/check_classroom_delivery.py --machine hard-gates.json --visual visual-qa.json' \
+              > "$out/VISUAL_QA_REQUIRED.txt"
           done < qa-artifacts/decks.txt
 
           # Rendering artifacts are uploaded even on QA failure in the next step.
