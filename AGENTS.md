@@ -29,12 +29,13 @@ A classroom PPTX may be delivered as a finished file only after all of the follo
 
 1. Source material has been checked for content fidelity.
 2. `scripts/check_deck.py` exits 0.
-3. `scripts/check_classroom_deck.py` exits 0 in the correct profile.
-4. Every slide has been rendered to PNG.
-5. Every PNG has been visually inspected at near-full size, not only as a contact sheet.
-6. The visual review has no unresolved high-severity issue.
-7. After any fix, the entire deck has been rendered again.
-8. `scripts/check_classroom_delivery.py` passes using the final machine-QA JSON and final visual-QA JSON.
+3. `scripts/check_classroom_hard_gates.py` exits 0 in the correct profile.
+4. `scripts/check_classroom_deck.py` exits 0.
+5. Every slide has been rendered to PNG.
+6. Every PNG has been visually inspected at near-full size, not only as a contact sheet.
+7. The visual review has no unresolved high- or medium-severity issue.
+8. After any fix, the entire deck has been rendered again.
+9. `scripts/check_classroom_delivery.py` passes using the final machine-QA JSON and final visual-QA JSON.
 
 If any of these steps cannot be executed, **do not describe the file as “完成版”, “確認済み”, “PASS”, or equivalent**. State that it is unverified and continue fixing with the tools that are available.
 
@@ -45,13 +46,18 @@ Unless the user explicitly says otherwise:
 - Every content slide must include substantive speaker notes.
 - Classroom slides are click-driven: content is revealed in teaching order.
 - Exercise/quiz slides must not show the answer at initial display.
-- Cover title is large; normal titles are projector-sized.
-- Body text is not shrunk to rescue a crowded layout.
-- Important English is visually dominant.
+- Cover title is at least 54pt; normal titles are at least 38pt.
+- Normal body text is at least 24pt; short labels are at least 22pt.
+- Important English text is at least 28pt and visually dominant.
+- Body text is never shrunk to rescue a crowded layout.
 - Rendered appearance is authoritative over PPTX coordinates.
 
 Use `--allow-static` only when the user explicitly asks for no click animation.
 Use `--notes-optional` only when the user explicitly says speaker notes are unnecessary.
+
+## Flowchart requests
+
+For any flowchart/decision-tree request, use `--profile flowchart` or allow `--profile auto` to infer it from the filename/cover. A flowchart request is not satisfied by a row or grid of rounded cards connected by decorative lines. The deck must have a persistent decision spine, explicit branch conditions, directional arrows, and branch zooms.
 
 ## GitHub Actions reporting rule
 
@@ -59,8 +65,9 @@ A green workflow is **not** evidence that a deck passed if the actual deck-QA st
 
 Never say “GitHub Actions checked the deck” unless the workflow logs show that the specific PPTX went through:
 
-- machine QA,
-- classroom QA,
+- general machine QA,
+- classroom hard-gate QA,
+- classroom layout QA,
 - rendering,
 - artifact generation.
 
