@@ -22,10 +22,22 @@
 
 ```bash
 python3 scripts/check_deck.py deck.pptx
-python3 scripts/check_classroom_deck.py deck.pptx --profile auto --json classroom-qa.json
+python3 scripts/check_classroom_hard_gates.py deck.pptx --profile auto --json hard-gates.json
+python3 scripts/check_classroom_deck.py deck.pptx --json classroom-qa.json
 ```
 
-両方 exit 0。
+3つすべて exit 0。
+
+Hard Gateは特に次を拒否する：
+
+- 表紙タイトル54pt未満
+- 通常タイトル38pt未満
+- 本文24pt未満
+- 短いラベル22pt未満
+- 英語の説明・例文28pt未満
+- substantive speaker notes 不足
+- clickEffect不足
+- フローチャート指定なのにカードグリッドへ退化
 
 FAILが1件でもあれば完成版ではない。
 
@@ -60,7 +72,7 @@ FAILが1件でもあれば完成版ではない。
 
 ```bash
 python3 scripts/check_classroom_delivery.py \
-  --machine classroom-qa.json \
+  --machine hard-gates.json \
   --visual visual-qa.json
 ```
 
@@ -72,7 +84,7 @@ PASSして初めて完成版。
 
 - スライド枚数
 - クリック演出概要
-- Machine QAのFAIL/WARN数
+- General QA / Hard Gate QA / Detailed QA の結果
 - Visual QA結果
 - 再レンダリング有無
 - 参照したForkのcommit SHA
