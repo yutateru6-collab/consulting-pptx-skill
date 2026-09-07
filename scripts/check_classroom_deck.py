@@ -34,6 +34,8 @@ NS = {"p": PML_NS}
 
 TITLE_MIN_PT = 38.0
 ABSOLUTE_MIN_PT = 20.0
+VISIBLE_AUX_TARGET_PT = 22.0
+GUIDANCE_MIN_PT = 22.0
 BODY_TARGET_PT = 24.0
 ENGLISH_TARGET_PT = 28.0
 FOOTER_Y_IN = 6.80
@@ -100,7 +102,28 @@ def is_small_kicker(shape, text: str) -> bool:
     top = float(shape.top) / EMU_PER_INCH
     size = max_font_pt(shape) or 0
     # e.g. PHRASAL VERBS / VQ II • 動詞② / Q1 / TAKEAWAY
-    return top < 1.0 and size <= 22 and visual_units(text) <= 18
+    return top < 1.0 and size <= VISIBLE_AUX_TARGET_PT and visual_units(text) <= 18
+
+
+def is_click_guidance(text: str) -> bool:
+    """Return True for visible presenter/student operation cues that must stay readable."""
+    normalized = text.replace("　", " ").strip().lower()
+    if not normalized:
+        return False
+    markers = (
+        "クリック",
+        "enter",
+        "エンター",
+        "プレゼンリモコン",
+        "押すたび",
+        "クリック①",
+        "クリック②",
+        "クリック③",
+        "クリック④",
+        "クリック⑤",
+        "クリック⑥",
+    )
+    return any(m.lower() in normalized for m in markers)
 
 
 def choose_title_shape(slide):
@@ -262,6 +285,10 @@ def run_checks(pptx_path: Path) -> dict:
             minpt = min_font_pt(shape)
             if minpt is not None and minpt < ABSOLUTE_MIN_PT:
                 fails.append(f"p{idx}: {minpt:.1f}pt text is below the {ABSOLUTE_MIN_PT:.0f}pt absolute classroom floor: {text[:55]!r}")
+            elif minpt is not None and is_click_guidance(text) and minpt < GUIDANCE_MIN_PT:
+                fails.append(f"p{idx}: visible click/operation guidance is {minpt:.1f}pt (< {GUIDANCE_MIN_PT:.0f}pt): {text[:55]!r}")
+            elif minpt is not None and minpt < VISIBLE_AUX_TARGET_PT:
+                warns.append(f"p{idx}: {minpt:.1f}pt visible text is above the hard floor but below the {VISIBLE_AUX_TARGET_PT:.0f}pt classroom auxiliary target: {text[:55]!r}")
             elif minpt is not None and minpt < BODY_TARGET_PT and not is_small_kicker(shape, text):
                 warns.append(f"p{idx}: {minpt:.1f}pt text is below the {BODY_TARGET_PT:.0f}pt classroom body target: {text[:55]!r}")
 
