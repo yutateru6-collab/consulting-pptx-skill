@@ -15,10 +15,10 @@ def main() -> int:
     assert sev == "FAIL", (sev, reason)
     assert "orphan" in reason.lower() or "uneven" in reason.lower()
 
-    bad_function_word = "I want to\nstudy English abroad next year."
+    bad_function_word = "I want to\nstudy with friends."
     sev, reason = explicit_balance_issue(bad_function_word)
     assert sev == "FAIL", (sev, reason)
-    assert "function word" in reason.lower()
+    assert "function word" in reason.lower(), reason
 
     balanced = "If it rains tomorrow,\nI will stay home."
     sev, reason = explicit_balance_issue(balanced)
