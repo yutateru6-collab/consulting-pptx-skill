@@ -3,8 +3,8 @@
 
 This is intentionally stricter than check_classroom_deck.py. It enforces
 non-negotiable classroom delivery rules: projector-sized text, substantive
-speaker notes, click-reveal coverage, and flowchart-specific anti-card-grid
-guardrails.
+speaker notes, click-reveal coverage, borderless text containers, and
+flowchart-specific anti-card-grid guardrails.
 
 Usage:
   python3 scripts/check_classroom_hard_gates.py deck.pptx --json hard-gates.json
@@ -67,6 +67,28 @@ def latin_ratio(s):
 def short_label(sh,s):
     if sh.top/EMU < 1.0 and units(s)<=18: return True
     return "\n" not in s and "\v" not in s and units(s)<=18 and len(s.split())<=5 and len(s)<=34
+
+def visible_text_box_outline(sh):
+    """Return True for an explicitly outlined rectangle that contains text.
+
+    Classroom Mode defaults to borderless text containers. We only reject
+    rectangle-family AutoShapes with a solid visible line; semantic linework
+    such as connectors, table borders, and axis lines is outside this check.
+    """
+    if sh.shape_type != MSO_SHAPE_TYPE.AUTO_SHAPE or not txt(sh).strip():
+        return False
+    try:
+        geom=sh._element.spPr.prstGeom
+        prst=geom.get("prst") if geom is not None else None
+    except Exception:
+        return False
+    if prst not in {"rect","roundRect","round1Rect","round2SameRect","round2DiagRect"}:
+        return False
+    try:
+        ft=sh.line.fill.type
+        return ft is not None and str(ft).upper().startswith("SOLID")
+    except Exception:
+        return False
 
 def choose_title(slide, cover=False):
     cs=[]
@@ -133,6 +155,8 @@ def check(path,profile="auto",allow_static=False,notes_optional=False):
                 t=txt(title).strip(); rec["title"]=t; s=maxpt(title) or 0
                 need=COVER_TITLE_MIN if i==1 else TITLE_MIN
                 if s<need: fails.append(f"p{i}: title {s:.1f}pt < {need:.0f}pt: {t[:60]!r}")
+                if visible_text_box_outline(title):
+                    fails.append(f"p{i}: title uses a visible rectangular outline; Classroom Mode text containers must be borderless: {t[:60]!r}")
 
             note=notes_text(zf,i); has=len(note)>=12; rec["notes"]=has
             if has: note_count+=1
@@ -142,6 +166,8 @@ def check(path,profile="auto",allow_static=False,notes_optional=False):
             for sh in slide.shapes:
                 s=txt(sh).strip()
                 if not s or footer(sh,prs) or sh is title: continue
+                if visible_text_box_outline(sh):
+                    fails.append(f"p{i}: text-bearing rectangle has a visible outline; use no-line text containers unless the border itself has semantic meaning: {s[:60]!r}")
                 if any(g in s for g in BAD_GLYPHS):
                     fails.append(f"p{i}: suspicious replacement glyph in {s[:60]!r}")
                 p=minpt(sh)
