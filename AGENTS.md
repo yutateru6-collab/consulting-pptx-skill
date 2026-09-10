@@ -12,9 +12,10 @@ Read in this order:
 2. `references/classroom-hard-gates-v3.md`
 3. `references/classroom-slide-rules.md`
 4. `references/classroom-rendering-stability.md`
-5. `references/classroom-delivery-contract.md`
-6. `references/classroom-visual-qa-v3.md`
-7. `references/slide-rules.md`
+5. `references/classroom-english-line-balance.md`
+6. `references/classroom-delivery-contract.md`
+7. `references/classroom-visual-qa-v3.md`
+8. `references/slide-rules.md`
 
 If the user says **flowchart / フローチャート / decision tree / 判断フロー**, also read:
 
@@ -32,12 +33,14 @@ A classroom PPTX may be delivered as a finished file only after all of the follo
 2. The draft has been normalized with `scripts/normalize_classroom_style.py` unless the user explicitly requested visible text borders.
 3. `scripts/check_deck.py` exits 0.
 4. `scripts/check_classroom_hard_gates.py` exits 0 in the correct profile.
-5. `scripts/check_classroom_deck.py` exits 0.
-6. Every slide has been rendered to PNG.
-7. Every PNG has been visually inspected at near-full size, not only as a contact sheet.
-8. The visual review has no unresolved high- or medium-severity issue.
-9. After any fix, the entire deck has been rendered again.
-10. `scripts/check_classroom_delivery.py` passes using the final machine-QA JSON and final visual-QA JSON.
+5. `scripts/check_classroom_english_balance.py` exits 0 for English-teaching/classroom decks.
+6. `scripts/check_classroom_deck.py` exits 0.
+7. Every slide has been rendered to PNG.
+8. Every PNG has been visually inspected at near-full size, not only as a contact sheet.
+9. Every English sentence has been visually checked for unnatural 2-line wrapping, orphan lines, and poor left/right balance.
+10. The visual review has no unresolved high- or medium-severity issue.
+11. After any fix, the entire deck has been rendered again.
+12. `scripts/check_classroom_delivery.py` passes using the final machine-QA JSON and final visual-QA JSON.
 
 If any of these steps cannot be executed, **do not describe the file as “完成版”, “確認済み”, “PASS”, or equivalent**. State that it is unverified and continue fixing with the tools that are available.
 
@@ -56,14 +59,18 @@ Unless the user explicitly says otherwise:
 - **Text containers are borderless by default.** Titles, body text, English examples, Japanese translations, explanations, answers, hints, and ordinary comparison blocks use `no line`.
 - A pale fill may be used for grouping, but do not add an outline around it by default.
 - Decorative “text + rectangle border” cards are not part of the default classroom visual language.
+- English sentences stay on one line when they comfortably fit. If they need two lines, break at a semantic boundary and avoid a visibly short orphan line.
+- A two-line English example is suspicious when one line is much shorter than the other; do not accept it only because the text technically fits.
+- Never shrink English merely to force one line; widen/reflow/rebreak the layout first.
 
 For generated classroom PPTX, run:
 
 ```bash
 python3 scripts/normalize_classroom_style.py path/to/deck.pptx --in-place
+python3 scripts/check_classroom_english_balance.py path/to/deck.pptx --json english-balance.json
 ```
 
-before the hard-gate checks. This strips decorative text-container outlines while preserving explicitly named semantic boundaries.
+before final visual acceptance. The balance checker catches explicit orphan/function-word breaks and warns about likely ragged automatic wraps, but rendered PNG review remains mandatory.
 
 If a visible border is semantically necessary, name the shape with one of these prefixes so the exception is explicit and auditable:
 
@@ -80,6 +87,21 @@ Do not use those prefixes merely to bypass the borderless policy.
 Use `--allow-static` only when the user explicitly asks for no click animation.
 Use `--notes-optional` only when the user explicitly says speaker notes are unnecessary.
 
+## English line-balance acceptance rule
+
+For English-teaching decks, inspect each rendered English example as typography, not only as text content.
+
+Reject or revise when:
+
+- a sentence that could comfortably fit on one line is broken into two lines,
+- a two-line sentence leaves only one or two words on either line,
+- the short line is roughly less than 40% of the long line without a strong semantic reason,
+- a line ends after a function word such as `to`, `the`, `of`, `would`, `could`, or `might`,
+- a subject or auxiliary cluster such as `If I` / `I would` is stranded,
+- left/right comparison examples have obviously mismatched vertical rhythm.
+
+Prefer semantic boundaries over mechanically equal character counts. If meaning and visual balance conflict, preserve meaning first and redesign the box/layout rather than forcing an awkward break.
+
 ## Flowchart requests
 
 For any flowchart/decision-tree request, use `--profile flowchart` or allow `--profile auto` to infer it from the filename/cover. A flowchart request is not satisfied by a row or grid of rounded cards connected by decorative lines. The deck must have a persistent decision spine, explicit branch conditions, directional arrows, and branch zooms.
@@ -94,6 +116,7 @@ Never say “GitHub Actions checked the deck” unless the workflow logs show th
 
 - general machine QA,
 - classroom hard-gate QA,
+- English line-balance QA,
 - classroom layout QA,
 - rendering,
 - artifact generation.
