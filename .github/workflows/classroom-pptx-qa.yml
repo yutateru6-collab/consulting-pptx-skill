@@ -34,6 +34,8 @@ on:
       - "scripts/classroom_style_policy.py"
       - "scripts/normalize_classroom_style.py"
       - "scripts/test_classroom_style_policy.py"
+      - "scripts/check_classroom_english_balance.py"
+      - "scripts/test_classroom_english_balance.py"
       - "scripts/check_classroom_deck.py"
       - "scripts/check_classroom_hard_gates.py"
       - "scripts/check_classroom_delivery.py"
@@ -50,6 +52,8 @@ on:
       - "scripts/classroom_style_policy.py"
       - "scripts/normalize_classroom_style.py"
       - "scripts/test_classroom_style_policy.py"
+      - "scripts/check_classroom_english_balance.py"
+      - "scripts/test_classroom_english_balance.py"
       - "scripts/check_classroom_deck.py"
       - "scripts/check_classroom_hard_gates.py"
       - "scripts/check_classroom_delivery.py"
@@ -93,6 +97,8 @@ jobs:
             scripts/classroom_style_policy.py \
             scripts/normalize_classroom_style.py \
             scripts/test_classroom_style_policy.py \
+            scripts/check_classroom_english_balance.py \
+            scripts/test_classroom_english_balance.py \
             scripts/check_classroom_deck.py \
             scripts/check_classroom_hard_gates.py \
             scripts/check_classroom_delivery.py \
@@ -100,6 +106,9 @@ jobs:
 
       - name: Borderless policy smoke test
         run: python3 scripts/test_classroom_style_policy.py
+
+      - name: English line-balance smoke test
+        run: python3 scripts/test_classroom_english_balance.py
 
       - name: Resolve PPTX inputs
         id: decks
@@ -173,6 +182,15 @@ jobs:
             fi
             echo "::endgroup::"
 
+            echo "::group::English Line Balance — $deck"
+            if ! python3 scripts/check_classroom_english_balance.py \
+              "$deck" \
+              --json "$out/english-balance.json" \
+              | tee "$out/english-balance.txt"; then
+              failed=1
+            fi
+            echo "::endgroup::"
+
             echo "::group::Classroom Detailed QA — $deck"
             if ! python3 scripts/check_classroom_deck.py \
               "$deck" \
@@ -188,13 +206,14 @@ jobs:
 
             printf '%s\n' \
               'Rendering succeeded, but the deck is NOT delivery-ready yet.' \
-              'Review every rendered PNG using references/classroom-visual-qa-v3.md,' \
-              'create visual-qa.json, rerender after any fixes, then run:' \
+              'Review every rendered PNG using references/classroom-visual-qa-v3.md' \
+              'and references/classroom-english-line-balance.md.' \
+              'Confirm there are no ragged/orphan English lines, create visual-qa.json,' \
+              'rerender after any fixes, then run:' \
               'python3 scripts/check_classroom_delivery.py --machine hard-gates.json --visual visual-qa.json' \
               > "$out/VISUAL_QA_REQUIRED.txt"
           done < qa-artifacts/decks.txt
 
-          # Rendering artifacts are uploaded even on QA failure in the next step.
           exit "$failed"
 
       - name: Upload rendered QA artifacts
