@@ -29,17 +29,18 @@
 5. `references/classroom-rendering-stability.md` を適用し、英文の不要改行・文字枠不足・AutoFit依存・内部余白不足を防ぐ。
 6. スピーカーノートに教師用の詳しい説明・問い・想定回答・クリック順を入れる。
 7. 原則、各内容スライドに on-click の段階表示を入れる。英文の強調のために英文自体を不自然に分割しない。
-8. `scripts/check_deck.py` を実行する。
-9. `scripts/check_classroom_hard_gates.py` を実行する。
-10. `scripts/check_classroom_deck.py` を実行する。
-11. **PPTXをPDF→PNGへレンダリングする。**
-12. 全ページPNGを1枚ずつ原寸に近い状態で見て、英文・和訳を実際に読む。**不要な四角枠が残っていないかも確認する。**
-13. コンタクトシートで全体の単調さ・色・構図の偏りも見る。
-14. `references/classroom-visual-qa-v3.md` の基準で visual QA JSON を作る。
-15. 問題が1件でもあれば、生成元を修正して**最終PPTXそのものから**全ページ再レンダリングする。
-16. クリック動作について、PowerPoint実再生かPPTX内部設定確認のみかを制作記録に明記する。
-17. `scripts/check_classroom_delivery.py` を通す。
-18. 最終版のみ納品する。
+8. **`python3 scripts/normalize_classroom_style.py path/to/deck.pptx --in-place` を実行し、通常テキストの装飾的な四角枠を除去する。**
+9. `scripts/check_deck.py` を実行する。
+10. `scripts/check_classroom_hard_gates.py` を実行する。
+11. `scripts/check_classroom_deck.py` を実行する。
+12. **PPTXをPDF→PNGへレンダリングする。**
+13. 全ページPNGを1枚ずつ原寸に近い状態で見て、英文・和訳を実際に読む。**不要な四角枠が残っていないかも確認する。**
+14. コンタクトシートで全体の単調さ・色・構図の偏りも見る。
+15. `references/classroom-visual-qa-v3.md` の基準で visual QA JSON を作る。
+16. 問題が1件でもあれば、生成元を修正して**最終PPTXそのものから**全ページ再レンダリングする。
+17. クリック動作について、PowerPoint実再生かPPTX内部設定確認のみかを制作記録に明記する。
+18. `scripts/check_classroom_delivery.py` を通す。
+19. 最終版のみ納品する。
 
 **一般QA、Hard Gate QA、画像QAの全部が必要。どれか1つでも未実行なら完成ではない。**
 
@@ -57,6 +58,20 @@
 - 枠線が必要なのは、表、フローチャートのノード境界、座標軸、ベン図、UI再現など、**線自体が意味を持つ場合だけ**。
 
 このデフォルトは、ユーザーが明示的に「枠を付けて」「囲みを使って」と指定した場合のみ解除する。
+
+### 境界線が意味を持つ例外の名前付け
+
+機械QAと自動整形で、意味のある境界線を通常の装飾枠と区別するため、境界線を残す図形には次の接頭辞を使う。
+
+- `FLOW_`：フローチャート・判断フロー
+- `NODE_`：意味を持つノード境界
+- `TABLE_`：表構造
+- `AXIS_`：座標・軸
+- `VENN_`：ベン図
+- `DIAGRAM_`：境界線そのものが意味を持つ図解
+- `UI_`：実物UI再現
+
+**例外接頭辞を、通常の英文・和訳・本文の枠線を残すための抜け道として使わない。**
 
 ---
 
@@ -114,6 +129,9 @@
 ```bash
 pip install python-pptx pillow
 
+# 生成時の取りこぼしを自動でborderless化する
+python3 scripts/normalize_classroom_style.py path/to/deck.pptx --in-place
+
 python3 scripts/check_deck.py path/to/deck.pptx
 
 # 最上位の拒否条件。ファイル名や表紙から flowchart を自動推定できる
@@ -132,6 +150,9 @@ python3 scripts/check_classroom_hard_gates.py \
   path/to/deck.pptx \
   --profile flowchart \
   --json hard-gates.json
+
+# borderlessポリシーの自己テスト
+python3 scripts/test_classroom_style_policy.py
 ```
 
 LibreOffice と poppler-utils がある環境では：
@@ -162,6 +183,8 @@ python3 scripts/check_classroom_delivery.py \
 
 Actionsは：
 
+- Pythonスクリプトのコンパイル
+- borderlessポリシーのsmoke test
 - 一般機械QA
 - Classroom Hard Gate QA
 - Classroom詳細QA
@@ -186,5 +209,6 @@ Actionsは：
 - フローチャート特有 → `references/classroom-flowchart-rules.md`
 - 画像でしか拾えない → `references/classroom-visual-qa-v3.md`
 - 機械検出できる → `scripts/check_classroom_hard_gates.py` / `scripts/check_classroom_deck.py`
+- スタイル正規化できる → `scripts/normalize_classroom_style.py` / `scripts/classroom_style_policy.py`
 
 **一度起きた失敗を次回から仕組みで防ぐ**ことをこのForkの基本方針とする。
