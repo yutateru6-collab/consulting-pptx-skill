@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "deckId": "present-perfect-vs-past",
+    "title": "現在完了と過去形",
+    "defaultStyleFamily": "clean-flat-education",
+    "outputTarget": "pptx",
+    "visualFrequency": "selective"
+  },
+  "slides": [
+    {
+      "slideId": "s01",
+      "slideType": "cover",
+      "decision": "use",
+      "reason": "授業テーマを一目でつかませる導入場面として機能する",
+      "role": "scene",
+      "learningFunction": "motivate",
+      "assetType": "generated-illustration",
+      "layout": "scene-plus-takeaway",
+      "bbox": { "x": 0.49, "y": 0.20, "w": 0.43, "h": 0.60 },
+      "textSafeZone": { "x": 0.06, "y": 0.18, "w": 0.37, "h": 0.62 },
+      "styleFamily": "clean-flat-education",
+      "embeddedText": false,
+      "prompt": "A clean flat educational illustration of a high school student holding a book they have just finished, with a visible sense of a present result from a past action. Simple classroom-friendly composition, light background, no text, leave clear negative space on the left for slide text.",
+      "altText": "読み終えた本を手に持ち、今の状態が分かる高校生の場面",
+      "source": {
+        "kind": "generated",
+        "provider": "image-generation-tool",
+        "rights": "generated for this deck"
+      },
+      "recurringCharacter": {
+        "enabled": false,
+        "reference": null
+      }
+    },
+    {
+      "slideId": "s02",
+      "slideType": "content",
+      "decision": "use",
+      "reason": "過去形と現在完了の違いを同じ題材の2場面で比較すると意味の差が見えやすい",
+      "role": "comparison",
+      "learningFunction": "contrast",
+      "assetType": "generated-illustration",
+      "layout": "paired-scenes",
+      "bbox": { "x": 0.52, "y": 0.24, "w": 0.41, "h": 0.54 },
+      "textSafeZone": { "x": 0.05, "y": 0.20, "w": 0.42, "h": 0.62 },
+      "styleFamily": "clean-flat-education",
+      "embeddedText": false,
+      "prompt": "Two matched educational scenes of the same student and the same book: one scene clearly finished in the past with no present connection, the other scene showing the present result of having just finished the book. Same character, same camera angle, clean flat style, no text, simple background.",
+      "altText": "同じ人物と本を使い、過去の出来事と今につながる結果を対比した2場面",
+      "source": {
+        "kind": "generated",
+        "provider": "image-generation-tool",
+        "rights": "generated for this deck"
+      },
+      "recurringCharacter": {
+        "enabled": true,
+        "reference": "assets/character-reference/student-model-sheet.png"
+      }
+    },
+    {
+      "slideId": "s03",
+      "slideType": "content",
+      "decision": "omit",
+      "reason": "文法形と英文の対比そのものが主役であり、イラストを置くと英文スペースを削るため"
+    },
+    {
+      "slideId": "s04",
+      "slideType": "practice",
+      "decision": "use",
+      "reason": "場面だけを手がかりに時制を選ばせるretrieval cueとして利用する",
+      "role": "scene",
+      "learningFunction": "retrieve",
+      "assetType": "generated-illustration",
+      "layout": "visual-left-text-right",
+      "bbox": { "x": 0.06, "y": 0.24, "w": 0.34, "h": 0.50 },
+      "textSafeZone": { "x": 0.46, "y": 0.20, "w": 0.47, "h": 0.58 },
+      "styleFamily": "clean-flat-education",
+      "embeddedText": false,
+      "prompt": "A simple educational scene showing a student standing next to an open empty lunch box and looking satisfied after eating. The present result should be obvious without any text. Clean flat illustration, light background, leave clear negative space on the right for a quiz sentence.",
+      "altText": "食べ終わった後の空の弁当箱と満足した生徒の場面",
+      "source": {
+        "kind": "generated",
+        "provider": "image-generation-tool",
+        "rights": "generated for this deck"
+      },
+      "recurringCharacter": {
+        "enabled": true,
+        "reference": "assets/character-reference/student-model-sheet.png"
+      }
+    }
+  ]
+}
