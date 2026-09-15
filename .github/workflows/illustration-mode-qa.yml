@@ -1,0 +1,58 @@
+name: Illustration Mode QA
+
+on:
+  push:
+    paths:
+      - 'ILLUSTRATION.md'
+      - 'skills/classroom-illustration/SKILL.md'
+      - 'references/illustration-mode.md'
+      - 'templates/illustration-plan.example.json'
+      - 'scripts/check_illustration_plan.py'
+      - 'scripts/test_illustration_plan.py'
+      - 'scripts/check_classroom_visual_assets.py'
+      - 'scripts/test_classroom_visual_assets.py'
+      - 'EDUCATION.md'
+      - '.github/workflows/illustration-mode-qa.yml'
+  pull_request:
+    paths:
+      - 'ILLUSTRATION.md'
+      - 'skills/classroom-illustration/SKILL.md'
+      - 'references/illustration-mode.md'
+      - 'templates/illustration-plan.example.json'
+      - 'scripts/check_illustration_plan.py'
+      - 'scripts/test_illustration_plan.py'
+      - 'scripts/check_classroom_visual_assets.py'
+      - 'scripts/test_classroom_visual_assets.py'
+      - 'EDUCATION.md'
+      - '.github/workflows/illustration-mode-qa.yml'
+
+jobs:
+  illustration-mode:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install python-pptx pillow
+      - name: Syntax check
+        run: |
+          python -m py_compile scripts/check_illustration_plan.py
+          python -m py_compile scripts/check_classroom_visual_assets.py
+          python -m py_compile scripts/test_illustration_plan.py
+          python -m py_compile scripts/test_classroom_visual_assets.py
+      - name: Validate canonical Illustration Plan
+        run: |
+          python scripts/check_illustration_plan.py templates/illustration-plan.example.json --json illustration-plan-qa.json
+      - name: Run Illustration Plan tests
+        run: python scripts/test_illustration_plan.py
+      - name: Run visual asset overlap tests
+        run: python scripts/test_classroom_visual_assets.py
+      - name: Upload Illustration Plan QA report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: illustration-mode-qa
+          path: illustration-plan-qa.json
+          if-no-files-found: ignore
