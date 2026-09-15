@@ -1,0 +1,53 @@
+name: Education Storyboard QA
+
+on:
+  push:
+    paths:
+      - 'EDUCATION.md'
+      - 'references/education-mode.md'
+      - 'references/english-teaching-archetypes.md'
+      - 'references/google-slides-output.md'
+      - 'templates/education-storyboard.example.json'
+      - 'scripts/check_education_storyboard.py'
+      - 'scripts/test_education_storyboard.py'
+      - 'scripts/upload_pptx_to_google_slides.py'
+      - 'requirements-google-slides.txt'
+      - '.github/workflows/education-storyboard-qa.yml'
+  pull_request:
+    paths:
+      - 'EDUCATION.md'
+      - 'references/education-mode.md'
+      - 'references/english-teaching-archetypes.md'
+      - 'references/google-slides-output.md'
+      - 'templates/education-storyboard.example.json'
+      - 'scripts/check_education_storyboard.py'
+      - 'scripts/test_education_storyboard.py'
+      - 'scripts/upload_pptx_to_google_slides.py'
+      - 'requirements-google-slides.txt'
+      - '.github/workflows/education-storyboard-qa.yml'
+
+jobs:
+  education-storyboard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax check
+        run: |
+          python -m py_compile scripts/check_education_storyboard.py
+          python -m py_compile scripts/upload_pptx_to_google_slides.py
+      - name: Validate canonical example
+        run: |
+          python scripts/check_education_storyboard.py templates/education-storyboard.example.json --json education-qa.json
+      - name: Run unit tests
+        run: |
+          python scripts/test_education_storyboard.py
+      - name: Upload QA report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: education-storyboard-qa
+          path: education-qa.json
+          if-no-files-found: ignore
