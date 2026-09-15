@@ -1,0 +1,157 @@
+{
+  "meta": {
+    "mode": "education",
+    "subject": "English grammar",
+    "audience": "Japanese high-school students",
+    "goal": "Students can distinguish the present perfect from the simple past and choose the correct form from context.",
+    "timeBudgetMinutes": 20,
+    "outputTargets": ["pptx", "google-slides"],
+    "googleSlidesBuildMode": "duplicate-slides"
+  },
+  "objectives": [
+    {
+      "id": "obj-meaning",
+      "text": "Explain whether a sentence connects a past event to the present.",
+      "bloom": "understand"
+    },
+    {
+      "id": "obj-choose",
+      "text": "Choose present perfect or simple past from time expressions and intended meaning.",
+      "bloom": "apply"
+    }
+  ],
+  "concepts": [
+    {
+      "id": "past-time",
+      "label": "finished past time",
+      "prerequisites": [],
+      "assumed": true
+    },
+    {
+      "id": "present-perfect-link",
+      "label": "past-to-present connection",
+      "prerequisites": ["past-time"]
+    },
+    {
+      "id": "tense-choice",
+      "label": "present perfect vs simple past choice",
+      "prerequisites": ["present-perfect-link"]
+    }
+  ],
+  "misconceptions": [
+    {
+      "id": "m1",
+      "text": "Students may think have + past participle always means a completed past event."
+    }
+  ],
+  "slides": [
+    {
+      "id": "s1",
+      "role": "hook",
+      "title": "同じ『行った』でも、英語では今とのつながりで形が変わる",
+      "objectiveIds": ["obj-meaning"],
+      "teaches": [],
+      "checks": [],
+      "answerInitiallyVisible": false,
+      "builds": ["show-scene", "show-two-sentences", "ask-which-fits"],
+      "notes": {
+        "teacherPrompt": "Which sentence fits a speaker who is still talking about the present situation?",
+        "expectedAnswer": "The present perfect sentence.",
+        "clickOrder": "scene → two sentences → question"
+      }
+    },
+    {
+      "id": "s2",
+      "role": "noticing",
+      "title": "yesterday は『終わった過去』、for five years は『今まで続く時間』を示す",
+      "objectiveIds": ["obj-meaning"],
+      "teaches": ["present-perfect-link"],
+      "checks": [],
+      "answerInitiallyVisible": false,
+      "builds": ["show-yesterday", "show-for-five-years", "highlight-time-axis"],
+      "notes": {
+        "explanation": "Have students notice the time expression before naming the grammar rule.",
+        "teacherPrompt": "Which expression reaches the present?",
+        "expectedAnswer": "for five years",
+        "clickOrder": "yesterday → for five years → timeline"
+      }
+    },
+    {
+      "id": "s3",
+      "role": "rule",
+      "title": "現在完了は『過去の出来事』ではなく『現在から見た過去』を表す",
+      "objectiveIds": ["obj-meaning", "obj-choose"],
+      "teaches": ["present-perfect-link", "tense-choice"],
+      "checks": [],
+      "answerInitiallyVisible": false,
+      "builds": ["show-form", "show-timeline", "show-meaning"],
+      "notes": {
+        "explanation": "Introduce have + past participle only after the meaning contrast is established.",
+        "teacherPrompt": "Where is the speaker's viewpoint: only in the past, or at the present?",
+        "expectedAnswer": "At the present.",
+        "clickOrder": "form → timeline → meaning"
+      }
+    },
+    {
+      "id": "s4",
+      "role": "worked-example",
+      "title": "時間表現→今とのつながり→時制、の順に判断すると迷わない",
+      "objectiveIds": ["obj-choose"],
+      "teaches": ["tense-choice"],
+      "checks": [],
+      "answerInitiallyVisible": false,
+      "builds": ["show-question", "underline-time-expression", "reason", "show-answer"],
+      "notes": {
+        "explanation": "Model one complete decision from clue to answer.",
+        "teacherPrompt": "What clue should we read first?",
+        "expectedAnswer": "The time expression.",
+        "clickOrder": "question → clue → reasoning → answer"
+      }
+    },
+    {
+      "id": "s5",
+      "role": "guided-practice",
+      "title": "まず手がかりだけ探す：答えより先に時間表現を見つける",
+      "objectiveIds": ["obj-choose"],
+      "teaches": [],
+      "checks": ["tense-choice"],
+      "answerInitiallyVisible": false,
+      "builds": ["show-question", "ask-clue", "show-hint", "show-answer", "show-reason"],
+      "notes": {
+        "teacherPrompt": "Do not ask for the tense first. Ask students to point to the clue.",
+        "expectedAnswer": "Students identify the time expression, then choose the tense.",
+        "clickOrder": "question → clue prompt → hint → answer → reason"
+      }
+    },
+    {
+      "id": "s6",
+      "role": "retrieval",
+      "title": "説明なしで選べるか：現在完了か過去形かを1問で確認する",
+      "objectiveIds": ["obj-meaning"],
+      "teaches": [],
+      "checks": ["present-perfect-link"],
+      "answerInitiallyVisible": false,
+      "builds": ["show-question", "wait", "show-answer", "show-one-line-reason"],
+      "notes": {
+        "teacherPrompt": "Give silent thinking time before taking answers.",
+        "expectedAnswer": "Student chooses and explains present connection.",
+        "clickOrder": "question → wait → answer → reason"
+      }
+    },
+    {
+      "id": "s7",
+      "role": "exit-ticket",
+      "title": "最後は自力で判断：手がかりと意味を根拠に時制を選ぶ",
+      "objectiveIds": ["obj-choose"],
+      "teaches": [],
+      "checks": ["tense-choice"],
+      "answerInitiallyVisible": false,
+      "builds": ["show-question", "wait", "show-answer", "show-reason"],
+      "notes": {
+        "teacherPrompt": "Ask for the reason, not only the answer.",
+        "expectedAnswer": "Correct tense plus a clue-based explanation.",
+        "clickOrder": "question → wait → answer → reason"
+      }
+    }
+  ]
+}
