@@ -3,6 +3,7 @@ name: Education Storyboard QA
 on:
   push:
     paths:
+      - 'CLASSROOM.md'
       - 'EDUCATION.md'
       - 'references/education-mode.md'
       - 'references/english-teaching-archetypes.md'
@@ -15,6 +16,7 @@ on:
       - '.github/workflows/education-storyboard-qa.yml'
   pull_request:
     paths:
+      - 'CLASSROOM.md'
       - 'EDUCATION.md'
       - 'references/education-mode.md'
       - 'references/english-teaching-archetypes.md'
