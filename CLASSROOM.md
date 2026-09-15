@@ -6,6 +6,20 @@
 
 このForkは、通常のコンサル型スライド規約の上に、**教室で生徒がスクリーンを見て理解・参加できる授業PowerPoint**のための厳格な Classroom Mode を追加する。
 
+## Education Mode — 英語を「理解させる」授業では必須
+
+英語授業、英文法、語彙、長文読解、英作文、リスニング、試験解説など、**生徒の理解・判断・再現を目的とするデッキ**では、通常のClassroom Modeに加えて `EDUCATION.md` を適用する。
+
+スライドの見た目を設計する前に、次のEducation preflightを実行する。
+
+1. `EDUCATION.md` を読む。
+2. `references/education-mode.md` と `references/english-teaching-archetypes.md` を読む。
+3. `templates/education-storyboard.example.json` を参考に `education-storyboard.json` を作り、学習目標・前提知識・典型誤答・各スライドの教育上の役割・確認問題を先に固定する。
+4. `python3 scripts/check_education_storyboard.py education-storyboard.json --json education-qa.json` を実行し、**FAIL 0**にする。FAILが残ったままPPTX生成へ進まない。
+5. Google Slidesも成果物に含める場合は、生成前に `references/google-slides-output.md` を読み、`googleSlidesBuildMode` を明示する。
+
+Education Modeは既存のClassroom Hard Gatesを置き換えない。**教育設計QAに通っても、文字サイズ・クリック表示・スピーカーノート・英文改行・borderless・レンダリング・全ページ目視・delivery gateは従来どおり必須**である。
+
 ## 優先順位
 
 中高の授業用スライドでは次の順で適用する。
