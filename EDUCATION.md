@@ -24,6 +24,10 @@ Education Mode では、Classroom Mode の必読資料に加えて次を読む�
 - `references/education-mode.md`
 - `references/english-teaching-archetypes.md`
 - **`references/classroom-layout-safety.md`** — 文字かぶり、自動折返し、可変高さテキストの縦積み事故を防ぐ
+- イラスト・画像・SVG・アイコン・キャラを使う場合:
+  - `ILLUSTRATION.md`
+  - `skills/classroom-illustration/SKILL.md`
+  - `references/illustration-mode.md`
 - Google Slides を出力する場合: `references/google-slides-output.md`
 
 ## 生成前ゲート: Education Storyboard
@@ -51,6 +55,33 @@ python3 scripts/check_education_storyboard.py education-storyboard.json --json e
 
 **FAILが1件でもあればスライド制作へ進まない。** WARNは人間/エージェントが理由を確認し、意図的な例外か修正対象かを判断する。
 
+## Illustration preflight — 絵を先に置かず、必要性を先に決める
+
+イラスト・画像・SVG・アイコン・継続キャラを使う場合は、Education Storyboard の後、スライド生成の前に `illustration-plan.json` を作る。
+
+テンプレート:
+
+- `templates/illustration-plan.example.json`
+
+各スライドで `use / omit` を明示し、`use` の場合だけ role・learningFunction・assetType・layout・bbox・textSafeZone・styleFamily・altText・source を定義する。
+
+検査:
+
+```bash
+python3 scripts/check_illustration_plan.py illustration-plan.json --json illustration-plan-qa.json
+```
+
+**Illustration PlanにFAILがあるまま画像生成や素材探しへ進まない。**
+
+原則:
+
+- 全ページに均等に絵を入れない
+- 「空いているから」は採用理由にしない
+- 絵は cognitive anchor になるページだけに使う
+- 文章を置いた後の余白へ絵をねじ込まず、先にvisual zoneを予約する
+- 重要英文・和訳・正解・数値を画像へ焼き込まない
+- 同一デッキでは画風と継続キャラを固定する
+
 ## レイアウト安全ゲート — 文字を置いてから祈らない
 
 英語授業では、主役英文・和訳・文法ラベルの縦位置を**固定Y座標で独立に置かない**。可変長テキストは上から下へ stack として配置し、次要素のY座標を直前要素の実効高さから計算する。
@@ -75,6 +106,26 @@ Text-flow QAがFAILなら、フォントを小さくして通さず、次の順�
 
 その後、従来どおり最終PPTXをPDF/PNGへ再レンダリングし、全ページを目視確認する。機械QA PASSだけで完成扱いにしない。
 
+## Visual Asset QA — 画像が文字へ侵入しないかを別ゲートで確認
+
+イラスト・画像・SVG等を含むPPTXでは、Text-flow QAに加えて次を実行する。
+
+```bash
+python3 scripts/check_classroom_visual_assets.py deck.pptx --json visual-assets-qa.json
+```
+
+このcheckerでは、通常イラストとネイティブ文字の重なり、画像と文字の安全距離、スライド外へのはみ出し、cropなし画像の縦横変形、画像過密を検査する。
+
+`BG_` / `FULLBLEED_` / `DIAGRAM_BG_` で始まる画像は意図的な背景として扱えるが、背景上の文字コントラストや視認性は必ず最終PNGで確認する。
+
+Visual Asset QAがFAILなら、文字を小さくせず、次の順で直す。
+
+1. visual zoneを縮める/移動する
+2. text zoneを広げる
+3. レイアウトを左右反転する
+4. イラストを次スライドへ分ける
+5. 不要ならイラストを削る
+
 ## PPTXとGoogle Slides
 
 - PowerPoint: Classroom Modeの on-click build を使う。
@@ -84,7 +135,7 @@ Text-flow QAがFAILなら、フォントを小さくして通さず、次の順�
 
 ## 外部プロジェクトから取り入れた設計思想
 
-この実装は、以下のMITライセンスの公開プロジェクトを参考にしつつ、このリポジトリの高校英語授業向け要件に合わせて再設計した。
+この実装は、以下の公開プロジェクトを参考にしつつ、このリポジトリの高校英語授業向け要件に合わせて再設計した。
 
 - SlideSage — education mode / backward design / prerequisite sequencing / retrieval / worked examples
   - https://github.com/vedraut/slidesage
@@ -92,5 +143,11 @@ Text-flow QAがFAILなら、フォントを小さくして通さず、次の順�
   - https://github.com/Noi1r/powerpoint-skill
 - google-slides-generator — shared geometry / visual proof / Google read-back / editable-native philosophy
   - https://github.com/oimiragieo/google-slides-generator
+- wshobson/agents / pptx-visual-assets — asset provenance / explicit bbox / aspect-ratio discipline / native labels
+  - https://github.com/wshobson/agents
+- lgwanai/ppt-skill — illustration search / educational visual categories / SVG recoloring
+  - https://github.com/lgwanai/ppt-skill
+- paper-engine-illustrations — cognitive anchors / shot-list planning / recurring-character consistency
+  - https://github.com/AppajiDheeraj/paper-engine-illustrations
 
-外部リポジトリのテンプレートやコードをそのまま正典にせず、`CLASSROOM.md` と本リポジトリのHard Gatesを常に優先する。
+外部リポジトリのテンプレート・コード・素材をそのまま正典にせず、`CLASSROOM.md` と本リポジトリのHard Gatesを常に優先する。第三者素材を実際に取り込む場合は、その素材自身のライセンスと出典を個別に確認する。
