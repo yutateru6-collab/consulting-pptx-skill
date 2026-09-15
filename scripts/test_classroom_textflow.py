@@ -25,11 +25,14 @@ def make_deck(path: Path, bad: bool):
     slide = prs.slides.add_slide(prs.slide_layouts[6])
 
     if bad:
+        # Narrow + shallow: the English is predicted to wrap to 3 lines and
+        # overflow into the Japanese block below.
         add_text(slide, "My brother washes his car every Sunday.", 1.0, 1.5, 3.2, 0.72, 32)
         add_text(slide, "毎週日曜に洗う", 1.0, 2.35, 3.2, 0.55, 26)
     else:
-        add_text(slide, "My brother washes his car every Sunday.", 1.0, 1.5, 4.3, 1.15, 32)
-        add_text(slide, "毎週日曜に洗う", 1.0, 2.95, 4.3, 0.55, 26)
+        # Wide + tall + safe gap: same content, but the layout has real reserve.
+        add_text(slide, "My brother washes his car every Sunday.", 1.0, 1.5, 6.0, 1.40, 32)
+        add_text(slide, "毎週日曜に洗う", 1.0, 3.20, 6.0, 0.70, 26)
 
     prs.save(path)
 
