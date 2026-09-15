@@ -23,6 +23,7 @@ Education Mode では、Classroom Mode の必読資料に加えて次を読む�
 
 - `references/education-mode.md`
 - `references/english-teaching-archetypes.md`
+- **`references/classroom-layout-safety.md`** — 文字かぶり、自動折返し、可変高さテキストの縦積み事故を防ぐ
 - Google Slides を出力する場合: `references/google-slides-output.md`
 
 ## 生成前ゲート: Education Storyboard
@@ -49,6 +50,30 @@ python3 scripts/check_education_storyboard.py education-storyboard.json --json e
 ```
 
 **FAILが1件でもあればスライド制作へ進まない。** WARNは人間/エージェントが理由を確認し、意図的な例外か修正対象かを判断する。
+
+## レイアウト安全ゲート — 文字を置いてから祈らない
+
+英語授業では、主役英文・和訳・文法ラベルの縦位置を**固定Y座標で独立に置かない**。可変長テキストは上から下へ stack として配置し、次要素のY座標を直前要素の実効高さから計算する。
+
+特に3カラムでは、各カラムの主役英文が28pt以上で原則2行以内に収まるかを先に確認する。2つ以上のカラムで3行以上になるなら、3カラムを維持せず2カラムまたは複数スライドへ再設計する。
+
+PPTX生成後は必ず次を実行する。
+
+```bash
+python3 scripts/check_classroom_textflow.py deck.pptx --json textflow-qa.json
+```
+
+このcheckerは、**テキストボックス同士の矩形は重なっていないのに、上の英文が自動折返しで1行増えてボックス外へoverflowし、下の日本語へ侵入するケース**をHard FAILとして検出する。
+
+Text-flow QAがFAILなら、フォントを小さくして通さず、次の順で直す。
+
+1. 例文を短くする
+2. 英文ボックスを広げる
+3. 3カラム→2カラム
+4. 和訳/補足を次クリック・次スライドへ送る
+5. スライドを分割する
+
+その後、従来どおり最終PPTXをPDF/PNGへ再レンダリングし、全ページを目視確認する。機械QA PASSだけで完成扱いにしない。
 
 ## PPTXとGoogle Slides
 
