@@ -1,0 +1,34 @@
+name: Classroom Textflow QA
+
+on:
+  push:
+    paths:
+      - 'references/classroom-layout-safety.md'
+      - 'scripts/check_classroom_textflow.py'
+      - 'scripts/test_classroom_textflow.py'
+      - 'EDUCATION.md'
+      - '.github/workflows/classroom-textflow-qa.yml'
+  pull_request:
+    paths:
+      - 'references/classroom-layout-safety.md'
+      - 'scripts/check_classroom_textflow.py'
+      - 'scripts/test_classroom_textflow.py'
+      - 'EDUCATION.md'
+      - '.github/workflows/classroom-textflow-qa.yml'
+
+jobs:
+  textflow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install python-pptx
+      - name: Syntax check
+        run: |
+          python -m py_compile scripts/check_classroom_textflow.py
+          python -m py_compile scripts/test_classroom_textflow.py
+      - name: Run text-flow regression tests
+        run: python scripts/test_classroom_textflow.py
