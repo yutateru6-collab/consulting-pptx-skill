@@ -1,0 +1,14 @@
+{
+  "source_artifact": "現在完了_インフォグラフィック_クリック表示_v3.pptx",
+  "source_sha256": "4f0d53adaf06b0369a5dfa682e99afdf6cf88d6671c501b81c6b257aef6af9e6",
+  "expected_clicks": 6,
+  "click_order": [
+    "CLICK01_形",
+    "CLICK02_基本イメージ",
+    "CLICK03_意味訳し方",
+    "CLICK04_例文と訳",
+    "CLICK05_ポイント",
+    "CLICK06_時間軸"
+  ],
+  "verification_scope": "Exact ppt/slides/slide1.xml extracted from the source artifact. GitHub Actions validates PowerPoint clickEffect/Fade timing structure and target shape IDs/names. This is not a Microsoft PowerPoint runtime playback test."
+}
