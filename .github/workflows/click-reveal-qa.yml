@@ -1,0 +1,70 @@
+name: Click Reveal QA
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/check_click_reveal_xml.py'
+      - 'scripts/test_click_reveal_xml.py'
+      - 'qa-click/**/*.xml'
+      - 'qa-click/**/*.json'
+      - '.github/workflows/click-reveal-qa.yml'
+  pull_request:
+    paths:
+      - 'scripts/check_click_reveal_xml.py'
+      - 'scripts/test_click_reveal_xml.py'
+      - 'qa-click/**/*.xml'
+      - 'qa-click/**/*.json'
+      - '.github/workflows/click-reveal-qa.yml'
+  workflow_dispatch:
+
+jobs:
+  click-reveal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade lxml
+
+      - name: Syntax check
+        run: |
+          python -m py_compile scripts/check_click_reveal_xml.py
+          python -m py_compile scripts/test_click_reveal_xml.py
+
+      - name: Regression tests
+        run: python scripts/test_click_reveal_xml.py
+
+      - name: Validate exact extracted click fixture
+        run: |
+          mkdir -p qa-artifacts/click-reveal
+          python scripts/check_click_reveal_xml.py \
+            qa-click/current-perfect/slide1.xml \
+            --manifest qa-click/current-perfect/manifest.json \
+            --json qa-artifacts/click-reveal/current-perfect.json
+
+      - name: Show exact artifact binding
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('qa-click/current-perfect/manifest.json').read_text())
+          print('source_artifact=', m['source_artifact'])
+          print('source_sha256=', m['source_sha256'])
+          print('expected_clicks=', m['expected_clicks'])
+          print('click_order=', ' -> '.join(m['click_order']))
+          PY
+
+      - name: Upload click QA report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: click-reveal-qa
+          path: qa-artifacts/click-reveal/
+          if-no-files-found: error
+          retention-days: 14
