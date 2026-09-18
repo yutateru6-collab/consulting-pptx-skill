@@ -332,6 +332,22 @@ def check_pptx(path):
 
 
 # ---------------------------------------------------------------- HTML
+# §7.22 英字大文字の装飾キッカー／§4.49 接続詞で始まる左右カラム見出し
+def check_kicker_and_conclusion(html):
+    body = re.sub(r"<(script|style)[^>]*>.*?</\1>", " ", html, flags=re.S)
+    texts = [re.sub(r"\s+", " ", t).strip() for t in re.findall(r">([^<>]{3,60})<", body)]
+    kick = [t for t in texts if re.fullmatch(r"(?:\d{2}\s*[・·/|]\s*)?[A-Z][A-Z0-9 &/·・\-]{5,}", t)
+            and re.search(r"[A-Z]{3,}\s+[A-Z]{2,}", t)
+            and not re.search(r"(?i)confidential|appendix|section|step|page", t)]
+    if kick:
+        warn(f"英字大文字の装飾キッカー ×{len(kick)}: {' / '.join(sorted(set(kick))[:4])}（§7.22: 日本語デッキでは右上タグチップで話題を示す）")
+    # 左右2カラムの見出し（h3/h4/.hd）だけを見る。th・行見出し（.rh）は行軸で通して読めるので対象外（§4.49）
+    heads = [re.sub(r"<[^>]+>", "", t).strip() for t in re.findall(r"<(?:h3|h4|div class=\"(?:hd|colhd|col-h)[^\"]*\")[^>]*>(.*?)</", body, re.S)]
+    dakara = [t for t in heads if re.match(r"^(だから|なので|つまり)[、:：]?", t)]
+    if dakara:
+        warn(f"左右カラムの見出しが接続詞で始まる ×{len(dakara)}（§4.49: 2コンテンツの見出しは単独で読める名詞句に）")
+
+
 def check_html(path):
     global STRICT_LEN
     STRICT_LEN = False
@@ -367,6 +383,11 @@ def check_html(path):
     td = re.search(r"\btd\s*{[^}]*font-size\s*:\s*(\d+)px", html)
     if th and td and int(th.group(1)) < int(td.group(1)) + 2:
         fail(f"表ヘッダー {th.group(1)}px が本文 {td.group(1)}px +2pt 未満")
+    elif th and td and int(th.group(1)) < int(td.group(1)) + 3:
+        warn(f"表ヘッダー {th.group(1)}px は本文 {td.group(1)}px +3px 未満（§6: 見出しは本文より+3〜4pt 大きくするのが目安）")
+    if re.search(r"\bth\s*{[^}]*color\s*:\s*#?(9[0-9a-f]{5}|a[0-9a-f]{5}|b[0-9a-f]{5}|c[0-9a-f]{5}|888|999|aaa|bbb|ccc|gr[ae]y)\b", html, re.I):
+        warn("表ヘッダーが薄グレー（§6: 見出しは本文と同じ濃色）")
+    check_kicker_and_conclusion(html)
     if re.search(r"\bth\s*{[^}]*font-weight\s*:\s*(400|normal|300)", html):
         fail("表ヘッダーが細字")
     if re.search(r"tr:nth-child\((even|odd)\)", html):
