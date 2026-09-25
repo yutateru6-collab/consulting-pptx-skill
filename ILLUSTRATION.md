@@ -2,9 +2,11 @@
 
 このモードは Classroom Mode / Education Mode に追加する**視覚設計レイヤー**である。目的は「空いている場所に絵を置く」ことではなく、**理解を助けるページだけに、意味のあるイラストを、文字と競合しない位置へ置く**こと。
 
-ユーザー指定の「まとめ画像を文字ごと画像生成で再制作し、画像の各部分をクリック表示」は通常の挿絵追加ではない。この場合だけ [`references/grammar-image-to-click-workflow.md`](references/grammar-image-to-click-workflow.md) と [`prompts/grammar-image-to-click-pptx.md`](prompts/grammar-image-to-click-pptx.md) の専用ルートを使い、文字の再生成を許す。通常のイラスト作成では引き続き学習上必要な文字を焼き込まない。
+ユーザー指定の「まとめ画像を文字ごと再制作し、画像の各部分をクリック表示」は通常の挿絵追加ではない。この場合は [`references/grammar-image-to-click-workflow.md`](references/grammar-image-to-click-workflow.md) と [`prompts/grammar-image-to-click-pptx.md`](prompts/grammar-image-to-click-pptx.md) の専用ルートを使う。入力画像のない画像パーツ方式にも完成教材画像への文字統合を許す。通常の**補助イラスト**作成では引き続き学習上必要な文字を焼き込まない。
 
 主方式の選択は [`PRESENTATION_MODES.md`](PRESENTATION_MODES.md)。このファイルの Illustration Plan は**補助素材としてのイラスト**に適用する。ページ全体を文字入り画像として再生成する制作だけでは発動しない。別途イラストを追加するときは通常どおり計画・検査する。
+
+入力画像なしで内容から2Kの図解画像を新たに作る `content-image-click` も**補助イラストの追加**ではない。最終画像には学習内容の文字を統合してよいが、正確さが必要な文字・枝・矢印は確定原稿で検証する。手順は [`references/content-to-2k-image-click-workflow.md`](references/content-to-2k-image-click-workflow.md)。
 
 ## 発動条件
 

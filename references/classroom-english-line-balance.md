@@ -1,6 +1,7 @@
 # Classroom English Line Balance — 英文の改行バランス規約
 
 この規約は Classroom Mode の英語教材に必須で適用する。
+主方式は [`../PRESENTATION_MODES.md`](../PRESENTATION_MODES.md) で選ぶ。英文の意味単位・視覚的な行バランスは画像パーツ方式も含めて共通。ネイティブ文字の機械チェックは `classroom-editable` 用で、画像内の英文は最終PNGを台帳と照合して確認する。
 目的は、英文が「入っている」だけでなく、**教室後方から一目で自然に読める行分けになっていること**を保証すること。
 
 ## 1. 基本原則

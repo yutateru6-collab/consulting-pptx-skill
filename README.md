@@ -9,9 +9,11 @@ A Claude Code skill for generating boardroom-quality decks: a 62-archetype slide
 
 ## 英文法まとめ画像からクリック式PowerPointを作る
 
-制作依頼の入口は [PowerPoint制作方式の振り分け表](PRESENTATION_MODES.md) に一本化しました。コンサル資料、編集可能な授業用資料、元画像を文字ごと再生成する授業用資料から主方式を一つ選び、追加ルールと検査条件を確認します。
+制作依頼の入口は [PowerPoint制作方式の振り分け表](PRESENTATION_MODES.md) に一本化しました。コンサル資料、編集可能な授業用資料、元画像を文字ごと再生成する授業用資料、**入力画像なしで内容から2K図解画像を起こす授業用資料**から主方式を一つ選び、追加ルールと検査条件を確認します。
 
 元画像を**文字ごと画像生成で描き直し、再生成した高解像度画像を意味単位で分割してPowerPoint上でクリック表示**する指定には、[コピーして使えるプロンプト](prompts/grammar-image-to-click-pptx.md)と[実装手順・前回の8枚版の記録](references/grammar-image-to-click-workflow.md)を使います。標準の編集可能テキストで組む授業PPTXとは別の、ユーザーが明示して選ぶ方式です。元画像の低解像度な切り抜きを流用せず、文字は画像内で再生成し、各画像パーツに個別のクリック演出を付けます。
+
+**入力画像がないとき**は、[入力内容→2Kインフォグラフィック＋フロー→画像パーツのプロンプト](prompts/content-to-2k-image-click-pptx.md)と[画質を保つ実装手順](references/content-to-2k-image-click-workflow.md)を使います。全体図を2Kで作った後、詳細ページは必要な項目ごとに**別の2K画像を作り直し**、そこから等倍以下で切り出します。[専用チェッカー](scripts/check_generated_image_parts.py)が最終PPTX内の表示寸法を調べ、小さな切り抜きの拡大を検出します。ノードや文字の直接編集が必要なら `classroom-editable` を明示します。
 
 ## 本質は `references/slide-rules.md`（約110項目のスライド規約）
 

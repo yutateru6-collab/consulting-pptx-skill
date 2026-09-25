@@ -1,6 +1,6 @@
 # Classroom Delivery Contract — 完成版を名乗る条件
 
-以下の16:9・編集可能な本文・ネイティブ文字サイズ・一般チェッカーのexit 0は [`../PRESENTATION_MODES.md`](../PRESENTATION_MODES.md) の `classroom-editable` 用である。ユーザーが明示した `source-image-click` には同表の原文台帳、生成画像、個別クリック、ノート、画像内容の照合による方式固有ゲートを適用し、一般チェッカーの対象外／判定不能を結果と理由付きで報告する。原本との一致や動作確認を省略しない。
+以下の16:9・編集可能な本文・ネイティブ文字サイズ・一般チェッカーのexit 0は [`../PRESENTATION_MODES.md`](../PRESENTATION_MODES.md) の `classroom-editable` 用である。`source-image-click` / `content-image-click` は同表の項目台帳、完成画像、個別クリック、ノート、内容の照合による方式固有ゲートを適用し、一般チェッカーの対象外／判定不能を理由付きで報告する。後者は**詳細画像の再作画と切り出しパーツの無拡大**も実検査する。内容一致と動作確認を省略しない。
 
 この契約は「完成したように見えるが、実際には未検証」という納品を防ぐ。
 

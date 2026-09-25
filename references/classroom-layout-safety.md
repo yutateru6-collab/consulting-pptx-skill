@@ -2,6 +2,8 @@
 
 この規則は Classroom Mode / Education Mode の全スライドに適用する。目的は、PPTX上の図形座標が正常でも、PowerPoint・LibreOffice・Google Slides等で文字が自動折返しして下の要素へ侵入する事故を防ぐことである。
 
+以下のテキストボックスの実効高さ・可変長文字のstack・AutoFit検査は [`../PRESENTATION_MODES.md`](../PRESENTATION_MODES.md) の `classroom-editable` 用。画像パーツの2方式は画像内の文字切れ・重なりを最終PNGで点検し、`content-image-click` はパーツの実画素とPPTX上の拡大有無も専用の検査で確認する。
+
 ## 1. 原則: 可変長テキストの下を固定Y座標で置かない
 
 悪い実装:

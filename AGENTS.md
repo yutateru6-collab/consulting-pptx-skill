@@ -8,7 +8,7 @@
 
 実行環境の上位指示と今回のユーザーの明示指定を尊重する。明示的に変更された条件だけを置き換え、それ以外を維持する。「早く」「簡単に」を検査省略や文字縮小の許可と解釈しない。依頼されていない仕様変更で通過させない。
 
-**最初に制作方式を確定する**：このファイル・`README.md`・`SKILL.md` を読んだ後、[`PRESENTATION_MODES.md`](PRESENTATION_MODES.md) で `consulting` / `classroom-editable` / `source-image-click` の主方式を1つ選び、作業メモに記す。英語授業・イラスト・フローチャート・Google Slidesは必要な追加ルール。方式を選ぶ前にコンサル用テンプレート、通常授業用の編集可能文字、画像再生成のいずれかで制作を始めない。
+**最初に制作方式を確定する**：このファイル・`README.md`・`SKILL.md` を読んだ後、[`PRESENTATION_MODES.md`](PRESENTATION_MODES.md) で `consulting` / `classroom-editable` / `source-image-click` / `content-image-click` の主方式を1つ選び、作業メモに記す。特に入力画像の有無と、文字・フローを編集可能にする明示指定を確認する。英語授業・補助イラスト・フローチャート・Google Slidesは必要な追加ルール。方式を選ぶ前に制作を始めない。
 
 ### ゲートA：最新版の全文取得・読了
 
@@ -37,7 +37,7 @@
 
 ### ゲートD：最終PPTX・画像・動作の検証
 
-標準の編集可能な授業PPTXには、このファイルの既存「Non-negotiable completion rule」に定める全検査を実行する。画像再生成方式は[`PRESENTATION_MODES.md`](PRESENTATION_MODES.md)の方式固有の完了条件も適用する。一般QA・hard gate等も診断として実行し、画像内文字や4:3のために判定が適用できない項目と本当に不合格の項目を分け、結果をPASSに改変しない。全ページ個別画像確認はどちらの方式も省略しない。
+標準の編集可能な授業PPTXには、このファイルの既存「Non-negotiable completion rule」に定める全検査を実行する。画像パーツの2方式は[`PRESENTATION_MODES.md`](PRESENTATION_MODES.md)の方式固有の完了条件も適用する。一般QA・hard gate等も診断として実行し、画像内文字や4:3のために判定が適用できない項目と本当に不合格の項目を分け、結果をPASSに改変しない。全ページ個別画像確認はすべての方式で省略しない。
 
 各要件の証拠を、最終PPTXの版またはハッシュ、実行したコマンドと結果、各スライド番号と確認画像に結びつける。状態は「未実装／実装済み未検証／合格／不合格／未確認／対象外」で区別する。未実施・証拠なし・旧版の検査結果を合格にしない。
 
@@ -62,6 +62,10 @@
 ユーザーが英文法などのまとめ画像について「元画像を画像生成で文字ごと描き直す → その**新しい生成画像**を切り分ける → PowerPointの個別画像をクリック表示する」と指定した場合、[`prompts/grammar-image-to-click-pptx.md`](prompts/grammar-image-to-click-pptx.md) と [`references/grammar-image-to-click-workflow.md`](references/grammar-image-to-click-workflow.md) を両方読む。これは利用者が選んだ**画像再生成モード**であり、元画像そのものの切り抜き、フォントと図形だけの模写、静的な全画面1枚画像に置き換えない。
 
 このモードに限り、ユーザーが明示した項目（画像内の文字、原画の囲み・画風、元資料に適した比率、可変の枚数・クリック数）を通常の編集可能文字・文字なしイラスト・16:9等の既定より優先する。ノート、内容の照合、大きな文字、初期状態での答え非表示、PowerPointの実際のon-click、最終PPTXからの全ページ目視は引き続き必要。画像内の文字を読めない既存チェッカーの結果は「対象外／判定不能とその理由」として記録し、PASSに読み替えない。該当する既存検査は実行し、文字画像には**原文台帳との1行ずつの照合と最終レンダリング**を追加する。通常の授業PPTXの既定・チェック条件には影響させない。
+
+### 入力画像なしの「2K全体図→詳細用2K画像→部分表示」授業PPTX
+
+入力画像がなく、授業内容・原稿・主題から同じ画像パーツ方式のPPTXを作る場合は `content-image-click` を選び、[`prompts/content-to-2k-image-click-pptx.md`](prompts/content-to-2k-image-click-pptx.md) と [`references/content-to-2k-image-click-workflow.md`](references/content-to-2k-image-click-workflow.md) を読む。**全体図に小さく描いた箇所をスライドで拡大しない。** まず新しい2Kの図解と意味のあるフローの完成画像を作り、詳細ページには項目ごとの新しい2K画像を作成し、その画像から元画素のまま切り出す。最終PPTXでの実表示幅・高さが各切り出しの画素数を超えたら完成扱いにしない。`scripts/check_generated_image_parts.py` と最終ページ画像で確認する。フローの問い・枝・英文の正確さは生成モデル任せにしない。編集可能な文字・ノードが明示された依頼にはこの方式を適用しない。
 
 ---
 
@@ -90,7 +94,7 @@ Classroom rules override generic consulting-layout preferences whenever they con
 
 ## Non-negotiable completion rule
 
-以下のネイティブ文字・16:9・標準チェッカーの条件は `classroom-editable` の納品ゲートである。ユーザーが指定した `source-image-click` では、[`PRESENTATION_MODES.md`](PRESENTATION_MODES.md) の方式固有ゲートを適用し、標準チェッカーの実行結果と方式上判定できない範囲を別に報告する。原文忠実性、ノート、実際のクリック効果、全ページ目視を免除しない。
+以下のネイティブ文字・16:9・標準チェッカーの条件は `classroom-editable` の納品ゲートである。画像パーツ方式の `source-image-click` / `content-image-click` では、[`PRESENTATION_MODES.md`](PRESENTATION_MODES.md) の方式固有ゲートを適用し、標準チェッカーの実行結果と方式上判定できない範囲を別に報告する。内容の正確さ、ノート、実際のクリック効果、全ページ目視を免除しない。
 
 **Never call a classroom deck complete only because the PPTX opens or because the XML is valid.**
 
@@ -171,9 +175,9 @@ Prefer semantic boundaries over mechanically equal character counts. If meaning 
 
 ## Flowchart requests
 
-For any flowchart/decision-tree request, use `--profile flowchart` or allow `--profile auto` to infer it from the filename/cover. A flowchart request is not satisfied by a row or grid of rounded cards connected by decorative lines. The deck must have a persistent decision spine, explicit branch conditions, directional arrows, and branch zooms.
+For an editable flowchart/decision-tree deck, use `--profile flowchart` or allow `--profile auto` to infer it from the filename/cover. For `source-image-click` and `content-image-click`, execute this checker as a diagnostic and apply the image-mode-specific quality gate instead. A real decision flow needs a persistent decision spine, supported branch conditions, directional arrows, and branch zooms. If the supplied content has no decision conditions, use a clearly named learning sequence rather than inventing a Yes/No tree.
 
-Node boundaries may be visible when the boundary itself communicates the decision structure. Ordinary English/Japanese explanatory text around the flowchart remains borderless.
+In `classroom-editable`, node boundaries may be visible when the boundary itself communicates the decision structure. Ordinary English/Japanese explanatory text around the flowchart remains borderless. For image-part modes, the user-selected diagram style and pixel-density checks apply.
 
 ## GitHub Actions reporting rule
 

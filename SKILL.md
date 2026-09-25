@@ -1,17 +1,19 @@
 ---
 name: consulting-pptx-skill
-description: スライド設計規約 slide-rules.md（実務レビュー由来・約80項目の正典）を核に、経営会議品質のスライドを作るスキル。作成前に規約を読み、自由記述テンプレート（本線）またはSlideSpecパイプライン（62型カタログの全型を編集可能PPTXで出せる）で組み、規約の範囲で型に囚われず調整し、check_deck.py の機械チェック FAIL 0 で仕上げる。型カタログはレイアウトの発想帳であり、合わせる対象ではない。トリガー例:「コンサル品質のスライドを作って」「規約に沿ったデッキで」「型カタログから選んで」。
+description: コンサル資料、編集可能な英語授業PowerPoint、教材画像を再生成して切り出すクリック式PowerPoint、画像なしの入力内容から2K図解画像を作って切り出すクリック式PowerPointを制作する。最初にPRESENTATION_MODES.mdで方式を選ぶ。トリガー例:「コンサル品質のスライド」「英語授業のPPTX」「この画像と同じ画風のクリック式PPTX」「内容から2Kインフォグラフィックとフローを作ってPowerPointに」。
 ---
 
 # コンサル型スライド作成スキル（規約正典を核にしたスライド作成システム）
 
-制作前に [`PRESENTATION_MODES.md`](PRESENTATION_MODES.md) で主方式を選ぶ。このページのA/Bレーンと一般の `slide-rules.md` は主に `consulting` 用であり、`classroom-editable` と `source-image-click` の方式固有条件を上書きしない。
+制作前に [`PRESENTATION_MODES.md`](PRESENTATION_MODES.md) で主方式を選ぶ。このページのA/Bレーンと一般の `slide-rules.md` は主に `consulting` 用であり、授業用の `classroom-editable` / `source-image-click` / `content-image-click` の方式固有条件を上書きしない。
 
 ## 授業用の画像再生成PowerPoint（ユーザーが明示した場合）
 
 英文法のまとめ画像を**画像生成で文字ごと描き直し、その新しい画像を分割してクリックで表示する**依頼は、このページのコンサル向けA/Bレーンでは扱わない。最初に `AGENTS.md` と `CLASSROOM.md` の適用範囲を確認し、[`prompts/grammar-image-to-click-pptx.md`](prompts/grammar-image-to-click-pptx.md) と [`references/grammar-image-to-click-workflow.md`](references/grammar-image-to-click-workflow.md) を読む。元画像の画素を引き伸ばした切り抜き、静止画1枚へのフラット化、フォント・図形だけによる代用は指定と異なる。画像内文字は文字単位では編集できないため、原文照合と画像の可読性を個別に検査する。
 
-**このスキルの主軸は `references/slide-rules.md` — 実務のレビュー指摘を1行ずつ蓄積した約80項目の設計規約です。** どんなスライドを作るときも、(1) 作成前に規約を読む → (2) 自由記述テンプレートかSlideSpecパイプラインでたたき台を組む → (3) 規約の範囲で型に囚われず調整する → (4) `scripts/check_deck.py` で FAIL 0 にする、の順で規約が常に上位に立ちます。型カタログ・テンプレート・パイプラインはすべて「規約を効率よく満たすための道具」であり、**スライドを型に合わせるのではなく、型をストーリーに合わせて選び、合わなければ捨てて自由に組みます。**
+入力画像がない授業用の画像パーツ方式では、[`prompts/content-to-2k-image-click-pptx.md`](prompts/content-to-2k-image-click-pptx.md) と [`references/content-to-2k-image-click-workflow.md`](references/content-to-2k-image-click-workflow.md) を読む。全体図のインフォグラフィック＋フローを2Kで新規制作し、大きく見せる項目は**項目専用の別の2K完成画像**から切り出す。小さい部分を拡大しないことを最終PPTXで検査する。文法の文字と分岐の正確さは入力内容の台帳と照合する。
+
+**コンサル資料の設計の主軸は `references/slide-rules.md` — 実務のレビュー指摘を1行ずつ蓄積した約80項目の設計規約です。** `consulting` では (1) 作成前に規約を読む → (2) 自由記述テンプレートかSlideSpecパイプラインでたたき台を組む → (3) 規約の範囲で型に囚われず調整する → (4) `scripts/check_deck.py` で FAIL 0 にする。画像パーツの授業用2方式は `PRESENTATION_MODES.md` の専用手順と方式固有の検査で進める。型カタログ・テンプレート・パイプラインはコンサル資料向けの道具である。
 
 ## 2つの作り方（本線は自由記述）
 

@@ -2,6 +2,8 @@
 
 ユーザーが「フローチャートっぽく」「判断フロー」「decision tree」等を指定したときに適用する。
 
+主方式は [`../PRESENTATION_MODES.md`](../PRESENTATION_MODES.md) で先に選ぶ。画像がなく入力内容から2K図解画像を作る `content-image-click` は [`content-to-2k-image-click-workflow.md`](content-to-2k-image-click-workflow.md) も適用する。この方式では、**§8のネイティブ編集可能性だけ例外**。問い・分岐・矢印・到達先の論理は守り、元の入力にない判断条件を捏造しない。
+
 ## 0. 定義
 
 フローチャートは**装飾ではなく判断ロジックの図**である。
@@ -120,6 +122,8 @@
 判断ノード、矢印、条件ラベル、ハイライトはPowerPoint上で編集可能なネイティブ図形にする。
 
 図全体を1枚の画像に焼き込まない。
+
+この§8は `classroom-editable` 用。ユーザーが画像パーツ式の `source-image-click` または `content-image-click` を選んだときは、**完成した正確な図解画像から意味単位に切り出した画像オブジェクト**を使用してよい。図形単位の編集はできないと納品時に明記する。
 
 ## 9. Flowchart Visual QA
 

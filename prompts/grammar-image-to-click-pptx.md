@@ -1,6 +1,6 @@
 # 英文法まとめ画像 → 再生成画像パーツによるクリック式PowerPoint
 
-画像と一緒に以下をそのまま渡す。主方式は [`../PRESENTATION_MODES.md`](../PRESENTATION_MODES.md) の `source-image-click`。実装上の注意は [`../references/grammar-image-to-click-workflow.md`](../references/grammar-image-to-click-workflow.md)。
+元画像を参照画像として渡す場合に以下を使う。主方式は [`../PRESENTATION_MODES.md`](../PRESENTATION_MODES.md) の `source-image-click`。画像がなく、内容だけを渡す場合は [`content-to-2k-image-click-pptx.md`](content-to-2k-image-click-pptx.md) に切り替える。実装上の注意は [`../references/grammar-image-to-click-workflow.md`](../references/grammar-image-to-click-workflow.md)。
 
 ## コピー用プロンプト
 

@@ -6,6 +6,8 @@
 
 適用する主方式は [`PRESENTATION_MODES.md`](PRESENTATION_MODES.md) で確定する。`source-image-click` かつ `source-only` のときは原本の全項目とスライド・クリックを対応させる。下記の Education Storyboard チェッカーはretrieval/exit-ticketを必須とするため、元画像にない問題を捏造して通さない。**この検査はその条件に限り対象外と記録し、PASSと報告しない。** 追加練習を依頼された場合は、追加分を原本由来の内容と区別して授業設計を行う。
 
+入力画像のない `content-image-click` は入力内容の項目台帳と、補足した文法事項の検証資料を基に図解を設計する。元の入力を整理する依頼では、未依頼の問題をStoryboardのretrieval/exit-ticket条件だけのために足さず、同チェッカーは対象外として記録する。主題だけで学習内容を補う場合も新規事実・例文の出典を記す。フローの分岐条件がない場合は架空の条件を生成しない。
+
 ## 目的
 
 良い授業スライドを「情報が整理された資料」ではなく、次の学習プロセスを画面上で成立させるものとして定義する。
@@ -36,7 +38,7 @@ Education Mode では、Classroom Mode の必読資料に加えて次を読む�
 
 ## 生成前ゲート: Education Storyboard
 
-以下のStoryboardとretrieval/exit-ticket検査は新しく授業を設計する `classroom-editable` 用。原本を忠実に再構成する `source-image-click` / `source-only` では、原文台帳と各項目→スライド→クリックの対応表を生成前に作り、原本にない練習の必須追加は適用しない。
+以下のStoryboardとretrieval/exit-ticket検査は新しく授業を設計する `classroom-editable` 用。画像パーツの2方式で元画像／入力内容を再構成する場合、各項目→スライド→クリックの対応表を生成前に作り、未依頼の練習の必須追加は適用しない。追加練習を依頼されたら区別して設計する。
 
 PPTX/Google Slidesを作る前に `education-storyboard.json` を作り、以下を明示する。
 
@@ -63,7 +65,7 @@ python3 scripts/check_education_storyboard.py education-storyboard.json --json e
 
 ## Illustration preflight — 絵を先に置かず、必要性を先に決める
 
-全ページの文字入り再生成画像を作る `source-image-click` は、以下の**補助イラスト**追加用 preflight の対象ではない。別の補助イラストを新規に追加する場合には適用する。
+全ページの文字入り完成画像を作る `source-image-click` / `content-image-click` は、以下の**補助イラスト**追加用 preflight の対象ではない。別の補助イラストを新規に追加する場合には適用する。
 
 イラスト・画像・SVG・アイコン・継続キャラを使う場合は、Education Storyboard の後、スライド生成の前に `illustration-plan.json` を作る。
 
@@ -92,6 +94,8 @@ python3 scripts/check_illustration_plan.py illustration-plan.json --json illustr
 
 ## レイアウト安全ゲート — 文字を置いてから祈らない
 
+以下のテキストボックスの縦積みと `check_classroom_textflow.py` は `classroom-editable` 用。画像パーツの2方式は画像内の改行・文字切れ・重なりを項目台帳と最終PNGで確認し、`content-image-click` は小さな画像パーツの拡大も専用の画素チェックで確認する。
+
 英語授業では、主役英文・和訳・文法ラベルの縦位置を**固定Y座標で独立に置かない**。可変長テキストは上から下へ stack として配置し、次要素のY座標を直前要素の実効高さから計算する。
 
 特に3カラムでは、各カラムの主役英文が28pt以上で原則2行以内に収まるかを先に確認する。2つ以上のカラムで3行以上になるなら、3カラムを維持せず2カラムまたは複数スライドへ再設計する。
@@ -115,6 +119,8 @@ Text-flow QAがFAILなら、フォントを小さくして通さず、次の順�
 その後、従来どおり最終PPTXをPDF/PNGへ再レンダリングし、全ページを目視確認する。機械QA PASSだけで完成扱いにしない。
 
 ## Visual Asset QA — 画像が文字へ侵入しないかを別ゲートで確認
+
+以下のネイティブ文字との重なり検査は、通常の補助イラストと編集可能文字を組み合わせる場合の規則。画像パーツで内容を表示する2方式は `PRESENTATION_MODES.md` の専用ゲートに従い、通常の検査結果を画像内文字のPASSと取り違えない。
 
 イラスト・画像・SVG等を含むPPTXでは、Text-flow QAに加えて次を実行する。
 

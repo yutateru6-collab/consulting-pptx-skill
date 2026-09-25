@@ -6,7 +6,7 @@
 
 このForkは、通常のコンサル型スライド規約の上に、**教室で生徒がスクリーンを見て理解・参加できる授業PowerPoint**のための厳格な Classroom Mode を追加する。
 
-制作開始前に [`PRESENTATION_MODES.md`](PRESENTATION_MODES.md) で `classroom-editable` と `source-image-click` を選ぶ。以下の「標準フロー」「標準デザイン」「既存機械ゲート」は編集可能文字の標準方式を記述する。画像再生成方式の明示的な例外と専用の検証条件はモード表と次節で確認する。
+制作開始前に [`PRESENTATION_MODES.md`](PRESENTATION_MODES.md) で `classroom-editable` / `source-image-click` / `content-image-click` から主方式を選ぶ。以下の「標準フロー」「標準デザイン」「既存機械ゲート」は編集可能文字の標準方式を記述する。画像パーツ方式の例外と専用の検証条件はモード表と次節で確認する。
 
 ## 元画像を画像生成で再制作する専用ルート
 
@@ -14,13 +14,17 @@
 
 元画像の文字列と最終画像の照合、可読性、スピーカーノート、本当のon-click画像オブジェクト、最終PPTXからの全ページ書き出しと目視は必須。従来の文字サイズ・英文バランスの機械チェックは画像内の文字を解析できないので、検査の適用可否と結果を記録し、原文台帳と全ページ目視で補う。検査で見ていない文字を「機械QA合格」と報告しない。
 
+## 入力画像がないときの2K画像パーツ専用ルート
+
+授業内容・原稿・主題はあるが参照画像がない場合は、[`prompts/content-to-2k-image-click-pptx.md`](prompts/content-to-2k-image-click-pptx.md) と [`references/content-to-2k-image-click-workflow.md`](references/content-to-2k-image-click-workflow.md) を適用する。全体図の2K画像にインフォグラフィックと実際の判断／学習フローを組み合わせ、詳細ページは項目専用の2K完成画像から切り出す。**小さく切り出した画像を大きく表示しない。** `scripts/check_generated_image_parts.py` は元画像と切り出しの画素一致に加えて、最終PPTXでの実際の表示寸法を検査する。編集可能文字を明示されたときはこの方式へ切り替えない。正確な分岐と英語本文を画像生成モデル任せにせず、入力・検証した文章と照合する。
+
 ## Education Mode — 英語を「理解させる」授業では必須
 
 英語授業、英文法、語彙、長文読解、英作文、リスニング、試験解説など、**生徒の理解・判断・再現を目的とするデッキ**では、通常のClassroom Modeに加えて `EDUCATION.md` を適用する。
 
-`classroom-editable` で授業を新規設計する場合、スライドの見た目を設計する前に次のEducation preflightを実行する。原本内容のみを再構成する `source-image-click` では元画像の項目→スライド→クリックの対応表を作り、原本にないretrieval問題を必須化しない（詳細は `EDUCATION.md` とモード表）。
+`classroom-editable` で授業を新規設計する場合、スライドの見た目を設計する前に次のEducation preflightを実行する。`source-image-click` / `content-image-click` では原画像または入力内容の項目→スライド→クリックの対応表を作り、未依頼のretrieval問題を検査のためだけに追加しない（詳細は `EDUCATION.md` とモード表）。
 
-以下の1～4は `classroom-editable` で授業を新規設計する場合の手順。`source-image-click` / `source-only` では `EDUCATION.md` の原文忠実性に関する規則を読み、原文台帳とクリック対応表で構成を検証する。
+以下の1～4は `classroom-editable` で授業を新規設計する場合の手順。画像パーツの2方式では `EDUCATION.md` の正確性に関する規則を読み、元画像または入力内容の台帳とクリック対応表で構成を検証する。
 
 1. `EDUCATION.md` を読む。
 2. `references/education-mode.md` と `references/english-teaching-archetypes.md` を読む。
@@ -28,7 +32,7 @@
 4. `python3 scripts/check_education_storyboard.py education-storyboard.json --json education-qa.json` を実行し、**FAIL 0**にする。FAILが残ったままPPTX生成へ進まない。
 5. Google Slidesも成果物に含める場合は、生成前に `references/google-slides-output.md` を読み、`googleSlidesBuildMode` を明示する。
 
-Education Modeは既存のClassroom Hard Gatesを置き換えない。**`classroom-editable` では教育設計QAに通っても、文字サイズ・クリック表示・スピーカーノート・英文改行・borderless・レンダリング・全ページ目視・delivery gateは従来どおり必須**である。`source-image-click` は方式固有ゲートに従う。
+Education Modeは既存のClassroom Hard Gatesを置き換えない。**`classroom-editable` では教育設計QAに通っても、文字サイズ・クリック表示・スピーカーノート・英文改行・borderless・レンダリング・全ページ目視・delivery gateは従来どおり必須**である。画像パーツの2方式は方式固有ゲートに従う。
 
 ## 優先順位
 
@@ -70,7 +74,7 @@ Education Modeは既存のClassroom Hard Gatesを置き換えない。**`classro
 18. `scripts/check_classroom_delivery.py` を通す。
 19. 最終版のみ納品する。
 
-**一般QA、Hard Gate QA、画像QAの全部を実行して結果と適用範囲を記録する。`classroom-editable` は全適用ゲートのPASSが完成条件。`source-image-click` は `PRESENTATION_MODES.md` の方式固有ゲートで完成を判定し、一般QAの画像内文字・16:9・ネイティブ文字等の対象外判定をPASSにしない。**
+**一般QA、Hard Gate QA、画像QAの全部を実行して結果と適用範囲を記録する。`classroom-editable` は全適用ゲートのPASSが完成条件。画像パーツの2方式は `PRESENTATION_MODES.md` の方式固有ゲートで完成を判定し、一般QAの画像内文字・16:9・ネイティブ文字等の対象外判定をPASSにしない。`content-image-click` では切り抜き画像のPPTX内での拡大が0件であることも確認する。**
 
 ---
 
@@ -152,7 +156,9 @@ Education Modeは既存のClassroom Hard Gatesを置き換えない。**`classro
 
 ---
 
-## ローカルQA
+## ローカルQA（`classroom-editable` は必須合格、画像パーツ方式は診断）
+
+画像パーツの2方式では、この節の `normalize_classroom_style.py` を適用すると原画の意図した囲み等を破壊し得るため実行しない。一般チェッカーはそのまま診断として実行し、画像パーツ方式の完了は方式固有ゲートで判定する。`content-image-click` では `scripts/check_generated_image_parts.py` に**最終PPTXと書き出し画像**を指定してPASSさせる。
 
 ```bash
 pip install python-pptx pillow
