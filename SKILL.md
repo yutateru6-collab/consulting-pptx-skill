@@ -5,6 +5,8 @@ description: スライド設計規約 slide-rules.md（実務レビュー由来�
 
 # コンサル型スライド作成スキル（規約正典を核にしたスライド作成システム）
 
+制作前に [`PRESENTATION_MODES.md`](PRESENTATION_MODES.md) で主方式を選ぶ。このページのA/Bレーンと一般の `slide-rules.md` は主に `consulting` 用であり、`classroom-editable` と `source-image-click` の方式固有条件を上書きしない。
+
 ## 授業用の画像再生成PowerPoint（ユーザーが明示した場合）
 
 英文法のまとめ画像を**画像生成で文字ごと描き直し、その新しい画像を分割してクリックで表示する**依頼は、このページのコンサル向けA/Bレーンでは扱わない。最初に `AGENTS.md` と `CLASSROOM.md` の適用範囲を確認し、[`prompts/grammar-image-to-click-pptx.md`](prompts/grammar-image-to-click-pptx.md) と [`references/grammar-image-to-click-workflow.md`](references/grammar-image-to-click-workflow.md) を読む。元画像の画素を引き伸ばした切り抜き、静止画1枚へのフラット化、フォント・図形だけによる代用は指定と異なる。画像内文字は文字単位では編集できないため、原文照合と画像の可読性を個別に検査する。

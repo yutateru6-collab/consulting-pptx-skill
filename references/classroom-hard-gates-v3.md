@@ -1,5 +1,7 @@
 # Classroom Hard Gates v3 — 授業PPTXの納品拒否条件
 
+ネイティブ文字のポイント数・16:9等の機械ゲートは [`../PRESENTATION_MODES.md`](../PRESENTATION_MODES.md) の `classroom-editable` に適用する。`source-image-click` では画像中の文字をポイント数で検査できないため、方式固有ゲートで原文照合と最終PNGの可読性を検証し、一般ゲートのFAILをPASSに読み替えない。クリックの実装・ノート・全ページ確認は両方式で必要。
+
 このファイルは Classroom Mode の**最上位の品質ゲート**である。
 
 目的は「それっぽいPPTX」を作ることではない。

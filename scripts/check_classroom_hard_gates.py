@@ -127,7 +127,12 @@ def notes_text(zf, n):
             break
     if not target:
         return ""
-    part = posixpath.normpath(posixpath.join("ppt/slides", target))
+    # OOXML permits absolute package-part targets as well as relative targets.
+    # A leading slash is not part of a ZIP member name.
+    if target.startswith("/"):
+        part = posixpath.normpath(target.lstrip("/"))
+    else:
+        part = posixpath.normpath(posixpath.join("ppt/slides", target))
     if part not in zf.namelist():
         return ""
     root = ET.fromstring(zf.read(part))

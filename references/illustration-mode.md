@@ -1,5 +1,7 @@
 # Illustration Mode — 授業用イラスト設計ルール
 
+主方式の選択は [`../PRESENTATION_MODES.md`](../PRESENTATION_MODES.md)。この文書はその上に重ねる**補助イラスト用**ルールであり、文字入りページ全体の再生成だけでは適用しない。
+
 このファイルは通常の挿絵を対象とする。ユーザーが原画像の**文字まで含めて新しいスライド用画像に再生成**すると明示した場合だけ、[`grammar-image-to-click-workflow.md`](grammar-image-to-click-workflow.md) の専用ルートを使う。以下の「重要文字を画像生成へ書かせない」規則を通常の挿絵へ適用し続ける。
 
 この文書は Classroom / Education スライドにイラスト・画像・SVG・アイコンを追加するときの正典である。

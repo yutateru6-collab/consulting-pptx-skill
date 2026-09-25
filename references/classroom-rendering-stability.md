@@ -1,5 +1,7 @@
 # Classroom Rendering Stability — PPTXの改行・文字枠・表示環境差を防ぐ
 
+適用方式は [`../PRESENTATION_MODES.md`](../PRESENTATION_MODES.md) で決める。以下のテキストボックス・フォントサイズ・AutoFit等の機械条件は `classroom-editable` 用。`source-image-click` では同じ可読性・自然な英文改行を**再生成画像の原文照合と最終PNGの目視**で確かめ、ネイティブ文字用チェッカーのPASSを画像内文字の証拠とみなさない。
+
 このファイルは、授業用PowerPointで起きやすい **不自然な英文改行、タイトル切れ、文字枠不足、フォント置換、レンダリング差、クリック演出によるレイアウト崩れ** を防ぐための必須ルールである。
 
 対象は Classroom Mode のPPTX制作・修正・QA。`references/classroom-hard-gates-v3.md`、`references/classroom-slide-rules.md`、`references/classroom-visual-qa-v3.md` と併用する。

@@ -4,6 +4,8 @@
 
 ユーザー指定の「まとめ画像を文字ごと画像生成で再制作し、画像の各部分をクリック表示」は通常の挿絵追加ではない。この場合だけ [`references/grammar-image-to-click-workflow.md`](references/grammar-image-to-click-workflow.md) と [`prompts/grammar-image-to-click-pptx.md`](prompts/grammar-image-to-click-pptx.md) の専用ルートを使い、文字の再生成を許す。通常のイラスト作成では引き続き学習上必要な文字を焼き込まない。
 
+主方式の選択は [`PRESENTATION_MODES.md`](PRESENTATION_MODES.md)。このファイルの Illustration Plan は**補助素材としてのイラスト**に適用する。ページ全体を文字入り画像として再生成する制作だけでは発動しない。別途イラストを追加するときは通常どおり計画・検査する。
+
 ## 発動条件
 
 次のいずれかに当てはまるとき適用する。

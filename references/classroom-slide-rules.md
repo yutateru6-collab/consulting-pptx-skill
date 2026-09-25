@@ -1,5 +1,7 @@
 # Classroom Slide Rules — 高校授業用PowerPoint正典
 
+主方式の選択は [`../PRESENTATION_MODES.md`](../PRESENTATION_MODES.md)。以下のネイティブ文字のpt数、編集可能性、標準の2～6クリック推奨は `classroom-editable` の基準。ユーザーが明示した `source-image-click` では画像内文字の可読性と意味のある5クリック以上を方式固有の基準で確かめる。原本忠実・段階表示・ノート・全ページ確認は共通。
+
 このファイルは `references/slide-rules.md` を置き換えるものではなく、**授業用デッキにだけ追加で適用する上位ルール**である。
 
 対象：中学生・高校生向けの授業、英文法、英語表現、長文、語彙、試験対策、クイズ、演習解説など。

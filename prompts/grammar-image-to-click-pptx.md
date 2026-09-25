@@ -1,11 +1,13 @@
 # 英文法まとめ画像 → 再生成画像パーツによるクリック式PowerPoint
 
-画像と一緒に以下をそのまま渡す。リポジトリ内の実装上の注意は [`../references/grammar-image-to-click-workflow.md`](../references/grammar-image-to-click-workflow.md)。
+画像と一緒に以下をそのまま渡す。主方式は [`../PRESENTATION_MODES.md`](../PRESENTATION_MODES.md) の `source-image-click`。実装上の注意は [`../references/grammar-image-to-click-workflow.md`](../references/grammar-image-to-click-workflow.md)。
 
 ## コピー用プロンプト
 
 ```text
 添付した英文法のまとめ画像を教材の原本として、授業で使うPowerPoint（.pptx）を作成してください。目標は「元画像の内容と手描きの雰囲気を保ちつつ、各項目をクリックで順番に見せられ、投影しても文字が読めるスライド」です。元画像を単に拡大したり、元画像の文字を切り抜いて貼ったりしないでください。
+
+リポジトリの制作方式は `source-image-click`、内容方針は `source-only` です。`PRESENTATION_MODES.md` に沿って、通常の `consulting` / `classroom-editable` の固定16:9、全テキストのネイティブ編集、囲み削除、原本にない練習問題の必須追加を今回の方式へ取り違えて適用しないでください。ただし原文照合、可読性、実際のon-click、教師用ノート、全ページ確認は必須です。
 
 制作方式を指定します。まず元画像を参照画像として画像生成ツールで、文字・英文・イラスト・背景を含む高解像度の「新しいスライド用画像」に再生成してください。次に、再生成した画像の中から表示単位ごとにPNGを切り出し、各PNGをPowerPoint上の独立した画像オブジェクトとして置き、各画像に本物の「クリック時にフェードイン」アニメーションを設定してください。文字も画像生成で作って構いません。図形や既存フォントで文字を打ち直す方式、元画像を切り貼りする方式、1枚の完成画像を各スライドに貼るだけの方式には変更しないでください。
 

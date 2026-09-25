@@ -4,6 +4,8 @@
 
 原画像の内容と画風を忠実にPowerPointへ移すことが明示された場合は、[`prompts/grammar-image-to-click-pptx.md`](prompts/grammar-image-to-click-pptx.md) と [`references/grammar-image-to-click-workflow.md`](references/grammar-image-to-click-workflow.md) を先に読む。原本にない確認問題を一般的な教材構成や機械チェックを通すためだけに足さない。画像内文字を例外的に許す範囲と検査方法は専用ルートに従い、通常のイラスト追加時の「重要文は画像に焼き込まない」という原則は維持する。
 
+適用する主方式は [`PRESENTATION_MODES.md`](PRESENTATION_MODES.md) で確定する。`source-image-click` かつ `source-only` のときは原本の全項目とスライド・クリックを対応させる。下記の Education Storyboard チェッカーはretrieval/exit-ticketを必須とするため、元画像にない問題を捏造して通さない。**この検査はその条件に限り対象外と記録し、PASSと報告しない。** 追加練習を依頼された場合は、追加分を原本由来の内容と区別して授業設計を行う。
+
 ## 目的
 
 良い授業スライドを「情報が整理された資料」ではなく、次の学習プロセスを画面上で成立させるものとして定義する。
@@ -26,13 +28,15 @@ Education Mode では、Classroom Mode の必読資料に加えて次を読む�
 - `references/education-mode.md`
 - `references/english-teaching-archetypes.md`
 - **`references/classroom-layout-safety.md`** — 文字かぶり、自動折返し、可変高さテキストの縦積み事故を防ぐ
-- イラスト・画像・SVG・アイコン・キャラを使う場合:
+- 補助素材のイラスト・画像・SVG・アイコン・キャラを追加する場合（全ページの文字入り画像再生成のみなら不要）:
   - `ILLUSTRATION.md`
   - `skills/classroom-illustration/SKILL.md`
   - `references/illustration-mode.md`
 - Google Slides を出力する場合: `references/google-slides-output.md`
 
 ## 生成前ゲート: Education Storyboard
+
+以下のStoryboardとretrieval/exit-ticket検査は新しく授業を設計する `classroom-editable` 用。原本を忠実に再構成する `source-image-click` / `source-only` では、原文台帳と各項目→スライド→クリックの対応表を生成前に作り、原本にない練習の必須追加は適用しない。
 
 PPTX/Google Slidesを作る前に `education-storyboard.json` を作り、以下を明示する。
 
@@ -58,6 +62,8 @@ python3 scripts/check_education_storyboard.py education-storyboard.json --json e
 **FAILが1件でもあればスライド制作へ進まない。** WARNは人間/エージェントが理由を確認し、意図的な例外か修正対象かを判断する。
 
 ## Illustration preflight — 絵を先に置かず、必要性を先に決める
+
+全ページの文字入り再生成画像を作る `source-image-click` は、以下の**補助イラスト**追加用 preflight の対象ではない。別の補助イラストを新規に追加する場合には適用する。
 
 イラスト・画像・SVG・アイコン・継続キャラを使う場合は、Education Storyboard の後、スライド生成の前に `illustration-plan.json` を作る。
 

@@ -1,5 +1,7 @@
 # Education Mode — 学習設計ルール
 
+主方式は [`../PRESENTATION_MODES.md`](../PRESENTATION_MODES.md) で選ぶ。以下の新規練習・retrievalを含む授業設計は主に `classroom-editable` に適用する。元画像の内容だけを再構成する `source-image-click` では、説明順・学習上の正確さを保ちつつ原本にない課題を追加しない。
+
 対象: 中高生向け英語授業、英文法、語彙、長文、英作文、リスニング、試験解説。
 
 このファイルは見た目ではなく、**何をどの順に理解させ、どこで生徒に思い出させるか**を定める。

@@ -2,9 +2,11 @@
 
 > **制作開始前に [AGENTS.md](AGENTS.md) を全文読み、ゲートA・Bを実行する。関連指示をすべて末尾まで読み、全要件の意味・適用範囲・実装先・検証方法を把握するまでスライドや生成コードを作り始めない。**
 >
-> **納品前はAGENTS.mdのゲートC・Dと本書の既存検査をすべて実行する。最終PPTX・全スライド画像・必要な動作確認を証拠にし、違反・未確認があれば完成扱いにしない。既存のクリック・枠線なし・英文改行・文字サイズの条件を省略しない。**
+> **納品前はAGENTS.mdのゲートC・Dと本書の既存検査を実行し、`PRESENTATION_MODES.md` で選んだ方式に適用される項目を判定する。最終PPTX・全スライド画像・必要な動作確認を証拠にし、適用項目に違反・未確認があれば完成扱いにしない。標準の `classroom-editable` では既存のクリック・枠線なし・英文改行・文字サイズの条件を省略しない。**
 
 このForkは、通常のコンサル型スライド規約の上に、**教室で生徒がスクリーンを見て理解・参加できる授業PowerPoint**のための厳格な Classroom Mode を追加する。
+
+制作開始前に [`PRESENTATION_MODES.md`](PRESENTATION_MODES.md) で `classroom-editable` と `source-image-click` を選ぶ。以下の「標準フロー」「標準デザイン」「既存機械ゲート」は編集可能文字の標準方式を記述する。画像再生成方式の明示的な例外と専用の検証条件はモード表と次節で確認する。
 
 ## 元画像を画像生成で再制作する専用ルート
 
@@ -16,7 +18,9 @@
 
 英語授業、英文法、語彙、長文読解、英作文、リスニング、試験解説など、**生徒の理解・判断・再現を目的とするデッキ**では、通常のClassroom Modeに加えて `EDUCATION.md` を適用する。
 
-スライドの見た目を設計する前に、次のEducation preflightを実行する。
+`classroom-editable` で授業を新規設計する場合、スライドの見た目を設計する前に次のEducation preflightを実行する。原本内容のみを再構成する `source-image-click` では元画像の項目→スライド→クリックの対応表を作り、原本にないretrieval問題を必須化しない（詳細は `EDUCATION.md` とモード表）。
+
+以下の1～4は `classroom-editable` で授業を新規設計する場合の手順。`source-image-click` / `source-only` では `EDUCATION.md` の原文忠実性に関する規則を読み、原文台帳とクリック対応表で構成を検証する。
 
 1. `EDUCATION.md` を読む。
 2. `references/education-mode.md` と `references/english-teaching-archetypes.md` を読む。
@@ -24,15 +28,15 @@
 4. `python3 scripts/check_education_storyboard.py education-storyboard.json --json education-qa.json` を実行し、**FAIL 0**にする。FAILが残ったままPPTX生成へ進まない。
 5. Google Slidesも成果物に含める場合は、生成前に `references/google-slides-output.md` を読み、`googleSlidesBuildMode` を明示する。
 
-Education Modeは既存のClassroom Hard Gatesを置き換えない。**教育設計QAに通っても、文字サイズ・クリック表示・スピーカーノート・英文改行・borderless・レンダリング・全ページ目視・delivery gateは従来どおり必須**である。
+Education Modeは既存のClassroom Hard Gatesを置き換えない。**`classroom-editable` では教育設計QAに通っても、文字サイズ・クリック表示・スピーカーノート・英文改行・borderless・レンダリング・全ページ目視・delivery gateは従来どおり必須**である。`source-image-click` は方式固有ゲートに従う。
 
 ## 優先順位
 
 中高の授業用スライドでは次の順で適用する。
 
-1. `references/classroom-hard-gates-v3.md`
-2. `references/classroom-slide-rules.md`
-3. ユーザーが今回指定した授業要件
+1. ユーザーが今回明示した授業要件と `PRESENTATION_MODES.md` で選んだ方式
+2. `references/classroom-hard-gates-v3.md`（その方式に適用できる項目）
+3. `references/classroom-slide-rules.md`（その方式に適用できる項目）
 4. `references/classroom-rendering-stability.md`
 5. `references/classroom-flowchart-rules.md`（フローチャート指定時）
 6. `references/classroom-delivery-contract.md`
@@ -44,7 +48,7 @@ Education Modeは既存のClassroom Hard Gatesを置き換えない。**教育�
 
 ---
 
-## Classroom Mode の標準フロー
+## Classroom Mode の標準フロー（`classroom-editable`）
 
 1. 教材・教科書・問題集など一次資料を読む。
 2. 何を生徒に理解させるかを1枚1役割で設計する。
@@ -66,11 +70,11 @@ Education Modeは既存のClassroom Hard Gatesを置き換えない。**教育�
 18. `scripts/check_classroom_delivery.py` を通す。
 19. 最終版のみ納品する。
 
-**一般QA、Hard Gate QA、画像QAの全部が必要。どれか1つでも未実行なら完成ではない。**
+**一般QA、Hard Gate QA、画像QAの全部を実行して結果と適用範囲を記録する。`classroom-editable` は全適用ゲートのPASSが完成条件。`source-image-click` は `PRESENTATION_MODES.md` の方式固有ゲートで完成を判定し、一般QAの画像内文字・16:9・ネイティブ文字等の対象外判定をPASSにしない。**
 
 ---
 
-## Classroom Mode の標準デザイン
+## Classroom Mode の標準デザイン（`classroom-editable`）
 
 授業用PPTXでは、**文字の周囲に四角い外枠線を付けない形式をデフォルト**とする。
 

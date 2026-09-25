@@ -8,6 +8,8 @@
 
 実行環境の上位指示と今回のユーザーの明示指定を尊重する。明示的に変更された条件だけを置き換え、それ以外を維持する。「早く」「簡単に」を検査省略や文字縮小の許可と解釈しない。依頼されていない仕様変更で通過させない。
 
+**最初に制作方式を確定する**：このファイル・`README.md`・`SKILL.md` を読んだ後、[`PRESENTATION_MODES.md`](PRESENTATION_MODES.md) で `consulting` / `classroom-editable` / `source-image-click` の主方式を1つ選び、作業メモに記す。英語授業・イラスト・フローチャート・Google Slidesは必要な追加ルール。方式を選ぶ前にコンサル用テンプレート、通常授業用の編集可能文字、画像再生成のいずれかで制作を始めない。
+
 ### ゲートA：最新版の全文取得・読了
 
 最初にこの `AGENTS.md`、`README.md`、`SKILL.md` を読む。授業用はこのファイル下部の「Files to read before producing a classroom deck」に従い、`CLASSROOM.md` と列挙された参照規則をすべて読む。フローチャート等の条件付き資料、実際に使用するテンプレート・検査手順、ユーザーから渡された教材も対象範囲で読む。
@@ -35,7 +37,7 @@
 
 ### ゲートD：最終PPTX・画像・動作の検証
 
-このファイルの既存「Non-negotiable completion rule」に定める全検査を実行する。一般QA、hard gate、英文バランス、レイアウト、全スライド個別画像確認、delivery gateのいずれも省略しない。
+標準の編集可能な授業PPTXには、このファイルの既存「Non-negotiable completion rule」に定める全検査を実行する。画像再生成方式は[`PRESENTATION_MODES.md`](PRESENTATION_MODES.md)の方式固有の完了条件も適用する。一般QA・hard gate等も診断として実行し、画像内文字や4:3のために判定が適用できない項目と本当に不合格の項目を分け、結果をPASSに改変しない。全ページ個別画像確認はどちらの方式も省略しない。
 
 各要件の証拠を、最終PPTXの版またはハッシュ、実行したコマンドと結果、各スライド番号と確認画像に結びつける。状態は「未実装／実装済み未検証／合格／不合格／未確認／対象外」で区別する。未実施・証拠なし・旧版の検査結果を合格にしない。
 
@@ -87,6 +89,8 @@ If the user says **flowchart / フローチャート / decision tree / 判断フ
 Classroom rules override generic consulting-layout preferences whenever they conflict.
 
 ## Non-negotiable completion rule
+
+以下のネイティブ文字・16:9・標準チェッカーの条件は `classroom-editable` の納品ゲートである。ユーザーが指定した `source-image-click` では、[`PRESENTATION_MODES.md`](PRESENTATION_MODES.md) の方式固有ゲートを適用し、標準チェッカーの実行結果と方式上判定できない範囲を別に報告する。原文忠実性、ノート、実際のクリック効果、全ページ目視を免除しない。
 
 **Never call a classroom deck complete only because the PPTX opens or because the XML is valid.**
 
