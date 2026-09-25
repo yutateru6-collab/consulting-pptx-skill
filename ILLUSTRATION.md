@@ -2,6 +2,8 @@
 
 このモードは Classroom Mode / Education Mode に追加する**視覚設計レイヤー**である。目的は「空いている場所に絵を置く」ことではなく、**理解を助けるページだけに、意味のあるイラストを、文字と競合しない位置へ置く**こと。
 
+ユーザー指定の「まとめ画像を文字ごと画像生成で再制作し、画像の各部分をクリック表示」は通常の挿絵追加ではない。この場合だけ [`references/grammar-image-to-click-workflow.md`](references/grammar-image-to-click-workflow.md) と [`prompts/grammar-image-to-click-pptx.md`](prompts/grammar-image-to-click-pptx.md) の専用ルートを使い、文字の再生成を許す。通常のイラスト作成では引き続き学習上必要な文字を焼き込まない。
+
 ## 発動条件
 
 次のいずれかに当てはまるとき適用する。

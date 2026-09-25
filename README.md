@@ -7,6 +7,10 @@ A Claude Code skill for generating boardroom-quality decks: a 62-archetype slide
 
 私たちが実際に毎週の提案書・報告書づくりで使っている仕組みの公開版です。解説記事はこちら → [AIにまじなスライド作らせる（note）](https://note.com/jinbaflow/n/nc8372b84e572)
 
+## 英文法まとめ画像からクリック式PowerPointを作る
+
+元画像を**文字ごと画像生成で描き直し、再生成した高解像度画像を意味単位で分割してPowerPoint上でクリック表示**する指定には、[コピーして使えるプロンプト](prompts/grammar-image-to-click-pptx.md)と[実装手順・前回の8枚版の記録](references/grammar-image-to-click-workflow.md)を使います。標準の編集可能テキストで組む授業PPTXとは別の、ユーザーが明示して選ぶ方式です。元画像の低解像度な切り抜きを流用せず、文字は画像内で再生成し、各画像パーツに個別のクリック演出を付けます。
+
 ## 本質は `references/slide-rules.md`（約110項目のスライド規約）
 
 このリポジトリでいちばん価値があるのは、実はテンプレでもスクリプトでもなく、**[slide-rules.md](references/slide-rules.md)** というテキストファイルです。実務の資料レビューで受けた指摘を1行ずつ書き溜めた約110項目。「結論はタイトルに書く」「角丸禁止」「塗りのあるボックスに枠線を付けない」「1資料1用語」「前提・定義は左、帰結は右」…。

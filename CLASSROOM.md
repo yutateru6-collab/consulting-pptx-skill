@@ -6,6 +6,12 @@
 
 このForkは、通常のコンサル型スライド規約の上に、**教室で生徒がスクリーンを見て理解・参加できる授業PowerPoint**のための厳格な Classroom Mode を追加する。
 
+## 元画像を画像生成で再制作する専用ルート
+
+ユーザーが**元の英文法まとめ画像を、文字を含めて画像生成で描き直し、再生成画像を分割して段階表示**することを明示した場合は、[`prompts/grammar-image-to-click-pptx.md`](prompts/grammar-image-to-click-pptx.md) と [`references/grammar-image-to-click-workflow.md`](references/grammar-image-to-click-workflow.md) を適用する。この依頼では文字の画像化、原画のノート罫線・手書きの囲み、原画に合わせたスライド比率を許す。通常の編集可能テキスト主体のClassroom Modeを選ぶ依頼にはこの例外を広げない。
+
+元画像の文字列と最終画像の照合、可読性、スピーカーノート、本当のon-click画像オブジェクト、最終PPTXからの全ページ書き出しと目視は必須。従来の文字サイズ・英文バランスの機械チェックは画像内の文字を解析できないので、検査の適用可否と結果を記録し、原文台帳と全ページ目視で補う。検査で見ていない文字を「機械QA合格」と報告しない。
+
 ## Education Mode — 英語を「理解させる」授業では必須
 
 英語授業、英文法、語彙、長文読解、英作文、リスニング、試験解説など、**生徒の理解・判断・再現を目的とするデッキ**では、通常のClassroom Modeに加えて `EDUCATION.md` を適用する。

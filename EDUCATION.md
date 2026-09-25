@@ -2,6 +2,8 @@
 
 このモードは `CLASSROOM.md` の上に追加する**学習設計レイヤー**である。英語授業、英文法、語彙、長文、英作文、試験解説など、生徒の理解・判断・再現を目的とするスライドでは適用する。
 
+原画像の内容と画風を忠実にPowerPointへ移すことが明示された場合は、[`prompts/grammar-image-to-click-pptx.md`](prompts/grammar-image-to-click-pptx.md) と [`references/grammar-image-to-click-workflow.md`](references/grammar-image-to-click-workflow.md) を先に読む。原本にない確認問題を一般的な教材構成や機械チェックを通すためだけに足さない。画像内文字を例外的に許す範囲と検査方法は専用ルートに従い、通常のイラスト追加時の「重要文は画像に焼き込まない」という原則は維持する。
+
 ## 目的
 
 良い授業スライドを「情報が整理された資料」ではなく、次の学習プロセスを画面上で成立させるものとして定義する。

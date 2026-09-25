@@ -55,6 +55,12 @@
 
 この追記は既存検査の必須適用を強化する制作手順である。新しい自動納品遮断機能を実装したこと、既存デッキを修正したこと、将来の違反ゼロの技術的保証を意味しない。
 
+### 明示指定された「元画像を再生成して分割する」授業PPTX
+
+ユーザーが英文法などのまとめ画像について「元画像を画像生成で文字ごと描き直す → その**新しい生成画像**を切り分ける → PowerPointの個別画像をクリック表示する」と指定した場合、[`prompts/grammar-image-to-click-pptx.md`](prompts/grammar-image-to-click-pptx.md) と [`references/grammar-image-to-click-workflow.md`](references/grammar-image-to-click-workflow.md) を両方読む。これは利用者が選んだ**画像再生成モード**であり、元画像そのものの切り抜き、フォントと図形だけの模写、静的な全画面1枚画像に置き換えない。
+
+このモードに限り、ユーザーが明示した項目（画像内の文字、原画の囲み・画風、元資料に適した比率、可変の枚数・クリック数）を通常の編集可能文字・文字なしイラスト・16:9等の既定より優先する。ノート、内容の照合、大きな文字、初期状態での答え非表示、PowerPointの実際のon-click、最終PPTXからの全ページ目視は引き続き必要。画像内の文字を読めない既存チェッカーの結果は「対象外／判定不能とその理由」として記録し、PASSに読み替えない。該当する既存検査は実行し、文字画像には**原文台帳との1行ずつの照合と最終レンダリング**を追加する。通常の授業PPTXの既定・チェック条件には影響させない。
+
 ---
 
 This fork adds a **strict classroom-production layer** on top of the upstream consulting PPTX skill.
