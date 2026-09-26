@@ -122,6 +122,7 @@ def check(pptx_path, manifest_path):
             with Image.open(generated_path) as generated:
                 if generated.format != "PNG":
                     raise ValueError(f"{name}: 再生成ファイルはPNGが必要です")
+                generated.load()  # Header-only reads miss truncated PNG data and absent IEND.
                 generated_size = generated.size
             generated_hash = digest(generated_path.read_bytes())
             if generated_hash == digest(crop_path.read_bytes()):
